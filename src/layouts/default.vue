@@ -63,19 +63,19 @@
 </template>
 
 <script>
-import { openURL } from 'quasar'
+import { openURL } from 'quasar';
 
 export default {
   name: 'LayoutDefault',
-  data () {
+  data() {
     return {
       leftDrawerOpen: this.$q.platform.is.desktop
-    }
+    };
   },
   methods: {
     openURL
   }
-}
+};
 </script>
 
 <style>

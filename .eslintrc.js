@@ -21,6 +21,8 @@ module.exports = {
   },
   // add your custom rules here
   'rules': {
+    'comma-dangle': ["error", "never"],
+
     'no-param-reassign': 0,
 
     'import/first': 0,
