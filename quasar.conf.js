@@ -25,6 +25,8 @@ module.exports = function (ctx) {
       // gzip: true,
       // analyze: true,
       // extractCSS: false,
+      devtool: '#source-map',
+      sourceMap: true,
       extendWebpack (cfg) {
         cfg.module.rules.push({
           enforce: 'pre',
@@ -115,6 +117,8 @@ module.exports = function (ctx) {
     },
     electron: {
       // bundler: 'builder', // or 'packager'
+      devtool: '#source-map',
+      sourceMap: true,
       extendWebpack (cfg) {
         // do something with Electron process Webpack cfg
       },
