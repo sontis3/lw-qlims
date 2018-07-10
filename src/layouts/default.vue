@@ -1,8 +1,8 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh Lpr fFf">
     <q-layout-header>
       <q-toolbar
-        color="primary"
+        color="secondary"
         :glossy="$q.theme === 'mat'"
         :inverted="$q.theme === 'ios'"
       >
@@ -25,7 +25,7 @@
 
     <q-layout-drawer
       v-model="leftDrawerOpen"
-      :content-class="$q.theme === 'mat' ? 'bg-grey-2' : null"
+      :content-class="$q.theme === 'mat' ? 'bg-grey-10' : null"
     >
       <q-list
         no-border
@@ -59,6 +59,9 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <q-layout-footer>123</q-layout-footer>
+
   </q-layout>
 </template>
 
@@ -79,4 +82,12 @@ export default {
 </script>
 
 <style>
+.q-layout-footer {
+  background-color: rgb(111, 111, 111);
+}
+
+.q-layout-page {
+  background-color: rgb(105, 105, 105);
+}
+
 </style>
