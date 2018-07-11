@@ -17,15 +17,20 @@
         </q-btn>
 
         <q-toolbar-title>
-          Quasar App
-          <div slot="subtitle">Running on Quasar v{{ $q.version }}</div>
+          My App
         </q-toolbar-title>
+
+        <q-btn-group>
+          <q-btn label="Справочники"></q-btn>
+          <q-btn label="Two"></q-btn>
+          <q-btn label="Three"></q-btn>
+        </q-btn-group>
       </q-toolbar>
     </q-layout-header>
 
     <q-layout-drawer
       v-model="leftDrawerOpen"
-      :content-class="$q.theme === 'mat' ? 'bg-grey-10' : null"
+      :content-class="$q.theme === 'mat' ? 'bg-grey-4' : null"
     >
       <q-list
         no-border
@@ -60,7 +65,9 @@
       <router-view />
     </q-page-container>
 
-    <q-layout-footer>123</q-layout-footer>
+    <q-layout-footer>
+      <div>Running on Quasar v {{ $q.version }}</div>
+    </q-layout-footer>
 
   </q-layout>
 </template>
@@ -83,11 +90,11 @@ export default {
 
 <style>
 .q-layout-footer {
-  background-color: rgb(111, 111, 111);
+  background-color: rgb(128, 128, 128);
 }
 
-.q-layout-page {
+/* .q-layout-page {
   background-color: rgb(105, 105, 105);
-}
+} */
 
 </style>
