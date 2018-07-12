@@ -17,7 +17,7 @@
         </q-btn>
 
         <q-toolbar-title>
-          My App
+          My App {{currentMode}}
         </q-toolbar-title>
 
         <q-btn-group>
@@ -74,6 +74,7 @@
 
 <script>
 import { openURL } from 'quasar';
+import { mapState } from 'vuex';
 
 export default {
   name: 'LayoutDefault',
@@ -82,6 +83,16 @@ export default {
       leftDrawerOpen: this.$q.platform.is.desktop
     };
   },
+  computed: {
+    ...mapState({
+      currentMode: state => state.example.currentMode
+    })
+  },
+  // {
+  //   currentMode() {
+  //     return this.$store.state.example.currentMode;
+  //   }
+  // },
   methods: {
     openURL
   }
