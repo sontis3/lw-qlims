@@ -21,9 +21,9 @@
         </q-toolbar-title>
 
         <q-btn-group>
-          <q-btn label="Справочники"></q-btn>
-          <q-btn label="Two"></q-btn>
-          <q-btn label="Three"></q-btn>
+          <q-btn @click="onChangeMode('Directory')" label="Справочники" :class="{checked: currentMode == 'Directory'}"></q-btn>
+          <q-btn @click="onChangeMode('Two')" label="Two" :class="{checked: currentMode == 'Two'}"></q-btn>
+          <q-btn @click="onChangeMode('Three')" label="Three" :class="{checked: currentMode == 'Three'}"></q-btn>
         </q-btn-group>
       </q-toolbar>
     </q-layout-header>
@@ -74,7 +74,7 @@
 
 <script>
 import { openURL } from 'quasar';
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: 'LayoutDefault',
@@ -85,16 +85,19 @@ export default {
   },
   computed: {
     ...mapState({
-      currentMode: state => state.example.currentMode
+      currentMode: state => state.appMode.currentMode
     })
   },
-  // {
-  //   currentMode() {
-  //     return this.$store.state.example.currentMode;
-  //   }
-  // },
   methods: {
-    openURL
+    ...mapMutations({
+      changeMode: 'appMode/changeMode'
+    }),
+    openURL,
+    onChangeMode(newMode) {
+      console.log(newMode);
+      // debugger;
+      this.changeMode(newMode);
+    }
   }
 };
 </script>
@@ -102,6 +105,15 @@ export default {
 <style>
 .q-layout-footer {
   background-color: rgb(128, 128, 128);
+}
+
+.q-toolbar>.q-btn-group>button {
+  opacity: 0.6;
+  font-weight: bold;
+}
+
+.q-toolbar>.q-btn-group>button.checked {
+  opacity: 1;
 }
 
 /* .q-layout-page {

@@ -22,6 +22,7 @@ module.exports = {
   // add your custom rules here
   'rules': {
     'comma-dangle': ["error", "never"],
+    'max-len': 0,
 
     'no-param-reassign': 0,
 
