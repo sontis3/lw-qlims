@@ -17,13 +17,13 @@
         </q-btn>
 
         <q-toolbar-title>
-          My App {{currentMode}}
+          My App
         </q-toolbar-title>
 
         <q-btn-group>
-          <q-btn @click="onChangeMode('Directory')" label="Справочники" :class="{checked: currentMode == 'Directory'}"></q-btn>
-          <q-btn @click="onChangeMode('Two')" label="Two" :class="{checked: currentMode == 'Two'}"></q-btn>
-          <q-btn @click="onChangeMode('Three')" label="Three" :class="{checked: currentMode == 'Three'}"></q-btn>
+          <q-btn @click="onChangeMode({id: 'Directory', name: 'Системные справочники'})" label="Справочники" :class="{checked: currentMode.id === 'Directory'}"></q-btn>
+          <q-btn @click="onChangeMode({id: 'Two', name: 'Заглушка 2'})" label="Two" :class="{checked: currentMode.id == 'Two'}"></q-btn>
+          <!-- <q-btn @click="onChangeMode({id: 'Three', name: 'Заглушка 3'})" label="Three" :class="{checked: currentMode.id == 'Three'}"></q-btn> -->
         </q-btn-group>
       </q-toolbar>
     </q-layout-header>
@@ -37,8 +37,12 @@
         link
         inset-delimiter
       >
-        <q-list-header>Essential Links</q-list-header>
-        <q-item @click.native="openURL('http://quasar-framework.org')">
+        <q-list-header inset>{{currentMode.name}}</q-list-header>
+        <q-item @click.native="onChangeAction(item.id)" v-for="item in currentActionsList" :key="item.id" :class="{checked: item.id === currentAction}">
+          <q-item-main :label="item.name" />
+        </q-item>
+
+        <!-- <q-item @click.native="openURL('http://quasar-framework.org')">
           <q-item-side icon="school" />
           <q-item-main label="Docs" sublabel="quasar-framework.org" />
         </q-item>
@@ -57,7 +61,8 @@
         <q-item @click.native="openURL('https://twitter.com/quasarframework')">
           <q-item-side icon="rss feed" />
           <q-item-main label="Twitter" sublabel="@quasarframework" />
-        </q-item>
+        </q-item> -->
+
       </q-list>
     </q-layout-drawer>
 
@@ -73,8 +78,8 @@
 </template>
 
 <script>
-import { openURL } from 'quasar';
-import { mapState, mapMutations } from 'vuex';
+// import { openURL } from 'quasar';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 
 export default {
   name: 'LayoutDefault',
@@ -86,17 +91,29 @@ export default {
   computed: {
     ...mapState({
       currentMode: state => state.appMode.currentMode
+    }),
+    ...mapGetters({
+      currentActionsList: 'appMode/currentActionsList',
+      currentAction: 'appMode/currentAction'
     })
   },
   methods: {
     ...mapMutations({
-      changeMode: 'appMode/changeMode'
+      changeMode: 'appMode/changeMode',
+      changeAction: 'appMode/changeAction'
     }),
-    openURL,
+    // openURL,
+    // по нажатию на кнопку в тулбаре
     onChangeMode(newMode) {
       console.log(newMode);
       // debugger;
       this.changeMode(newMode);
+    },
+    // по нажатию на кнопку в тулбаре
+    onChangeAction(newAction) {
+      console.log(newAction);
+      // debugger;
+      this.changeAction(newAction);
     }
   }
 };
@@ -113,6 +130,15 @@ export default {
 }
 
 .q-toolbar>.q-btn-group>button.checked {
+  opacity: 1;
+}
+
+.q-item {
+  opacity: 0.6;
+  font-weight: bold;
+}
+
+.q-item.checked {
   opacity: 1;
 }
 
