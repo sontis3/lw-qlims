@@ -38,7 +38,7 @@
         inset-delimiter
       >
         <q-list-header inset>{{currentMode.name}}</q-list-header>
-        <q-item @click.native="onChangeAction(item.id)" v-for="item in currentActionsList" :key="item.id" :class="{checked: item.id === currentAction}">
+        <q-item @click.native="onChangeAction(item.id)" v-for="item in currentActionsList" :key="item.id" :class="{checked: item.id === currentAction}" :to="{name: item.id}">
           <q-item-main :label="item.name" />
         </q-item>
 
@@ -109,7 +109,7 @@ export default {
       // debugger;
       this.changeMode(newMode);
     },
-    // по нажатию на кнопку в тулбаре
+    // по нажатию на пункт акции в drawer
     onChangeAction(newAction) {
       console.log(newAction);
       // debugger;
