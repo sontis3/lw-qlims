@@ -37,7 +37,7 @@
         link
         inset-delimiter
       >
-        <q-list-header inset>{{currentMode.name}}</q-list-header>
+        <q-list-header>{{currentMode.name}}</q-list-header>
         <q-item @click.native="onChangeAction(item.id)" v-for="item in currentActionsList" :key="item.id" :class="{checked: item.id === currentAction}" :to="{name: item.id}">
           <q-item-main :label="item.name" />
         </q-item>

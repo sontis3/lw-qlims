@@ -1,10 +1,11 @@
 <template>
   <q-page>
     <q-table
-      title="Customers table"
+      title="Список заказчиков"
       :data="tData"
       :columns="columns"
       row-key="name"
+      dense
     />
   </q-page>
 </template>
