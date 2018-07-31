@@ -142,8 +142,4 @@ export default {
   opacity: 1;
 }
 
-/* .q-layout-page {
-  background-color: rgb(105, 105, 105);
-} */
-
 </style>
