@@ -12,21 +12,21 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "vue-i18n": "^7.3.3"
+    "vue-i18n": "^8.0.0"
   },
   "devDependencies": {
-    "babel-eslint": "^8.2.1",
+    "babel-eslint": "^8.2.6",
     "devtron": "^1.4.0",
-    "electron": "^2.0.0",
-    "electron-debug": "^1.5.0",
+    "electron": "^2.0.7",
+    "electron-debug": "^2.0.0",
     "electron-devtools-installer": "^2.2.4",
     "electron-packager": "^12.1.0",
-    "eslint": "^4.18.2",
-    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^13.0.0",
     "eslint-friendly-formatter": "^4.0.1",
-    "eslint-loader": "^2.0.0",
-    "eslint-plugin-import": "^2.9.0",
-    "eslint-plugin-vue": "^4.3.0",
+    "eslint-loader": "^2.1.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-vue": "^4.7.1",
     "quasar-cli": "^0.17.8",
     "strip-ansi": "^3.0.1"
   },
