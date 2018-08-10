@@ -1,11 +1,12 @@
 <template>
   <q-page>
     <q-table
-      title="Список заказчиков"
-      :data="tData"
-      :columns="columns"
-      row-key="name"
+      title='Список заказчиков'
+      :data='tData'
+      :columns='columns'
+      row-key='name'
       dense
+      separator='cell'
     />
   </q-page>
 </template>
@@ -15,77 +16,39 @@ export default {
   data: () => ({
     columns: [
       {
-        name: 'desc',
+        name: 'name',
         required: true,
-        label: 'Dessert (100g serving)',
+        label: 'Наименование заказчика',
         align: 'left',
         field: 'name',
         sortable: true
       },
       {
-        name: 'calories',
-        label: 'Calories',
-        field: 'calories',
+        name: 'active',
+        required: true,
+        label: 'Действующий',
+        align: 'center',
+        field: 'active',
         sortable: true
       },
       {
-        name: 'fat',
-        label: 'Fat (g)',
-        field: 'fat',
+        name: 'dateCreated',
+        required: true,
+        label: 'Дата создания',
+        align: 'center',
+        field: 'dateCreated',
         sortable: true
       },
       {
-        name: 'carbs',
-        label: 'Carbs (g)',
-        field: 'carbs'
-      },
-      {
-        name: 'protein',
-        label: 'Protein (g)',
-        field: 'protein'
-      },
-      {
-        name: 'sodium',
-        label: 'Sodium (mg)',
-        field: 'sodium'
-      },
-      {
-        name: 'calcium',
-        label: 'Calcium (%)',
-        field: 'calcium',
-        sortable: true,
-        sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
-      },
-      {
-        name: 'iron',
-        label: 'Iron (%)',
-        field: 'iron',
-        sortable: true,
-        sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
+        name: 'dateUpdated',
+        required: true,
+        label: 'Дата изменения',
+        align: 'center',
+        field: 'dateUpdated',
+        sortable: true
       }
     ],
-    tData: [
-      {
-        name: 'Frozen Yogurt',
-        calories: 159,
-        fat: 6.0,
-        carbs: 24,
-        protein: 4.0,
-        sodium: 87,
-        calcium: '14%',
-        iron: '1%'
-      },
-      {
-        name: 'Frozen Yogurt2',
-        calories: 1592,
-        fat: 6.02,
-        carbs: 242,
-        protein: 4.02,
-        sodium: 872,
-        calcium: '14%',
-        iron: '12%'
-      }
-    ]
+    tData: []
   }),
 
   // хук когда компонент загружен
@@ -98,28 +61,15 @@ export default {
         method: 'get',
         url: 'http://localhost:3000/api/dir/customers'
       })
-        .then((response) => {
-          this.columns = [
-            {
-              name: 'name',
-              required: true,
-              label: 'Наименование заказчика',
-              align: 'left',
-              field: 'name',
-              sortable: true
-            },
-            {
-              name: 'active',
-              required: true,
-              label: 'Действующий',
-              align: 'left',
-              field: 'active',
-              sortable: true
-            }
-          ];
-          this.tData = response.data;
-        })
-        .catch();
+        .then((response) => { this.tData = response.data; })
+        .catch((err) => {
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: `${err.message} = get http://localhost:3000/api/dir/customers`,
+            icon: 'report_problem'
+          });
+        });
     }
   }
 };
