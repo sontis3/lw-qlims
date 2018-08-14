@@ -1,44 +1,33 @@
 <template>
   <q-page>
-    <q-table
-      title="Список заказчиков"
-      :data="tData"
+    <BaseDirTable
+      :title="title"
       :columns="columns"
-      :visible-columns="visibleColumns"
-      :filter="filter"
-      row-key="name"
-      dense
-      separator="cell"
+      :visibleColumns="visibleColumns"
+      ref="baseTable"
     >
-    <template slot="top-left" slot-scope="props">
-      <q-search
-        hide-underline
-        color="secondary"
-        v-model="filter"
-        class="col-6"
-      />
-    </template>
-    <template slot="top-right" slot-scope="props">
-      <q-table-columns
-        color="secondary"
-        class="q-mr-sm"
-        v-model="visibleColumns"
-        :columns="columns"
-      />
-      <q-btn
-        flat round dense
-        :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-        @click="props.toggleFullscreen"
-      />
-    </template>
-    </q-table>
+    </BaseDirTable>
   </q-page>
 </template>
 
 <script>
+import BaseDirTable from '../auxiliary/BaseTable.vue';
+
 export default {
+  components: {
+    BaseDirTable
+  },
   data: () => ({
-    columns: [
+    title: 'Список заказчиков',
+    columns: [],
+    visibleColumns: []
+  }),
+
+  // хук когда компонент загружен
+  mounted() {
+    this.$refs.baseTable.getAll('http://localhost:3000/api/dir/customers');
+    this.visibleColumns = ['desc', 'active', 'dateCreated', 'dateUpdated'];
+    this.columns = [
       {
         name: 'desc',
         required: true,
@@ -68,32 +57,9 @@ export default {
         field: 'dateUpdated',
         sortable: true
       }
-    ],
-    visibleColumns: ['desc', 'active', 'dateCreated', 'dateUpdated'],
-    filter: '',
-    tData: []
-  }),
-
-  // хук когда компонент загружен
-  mounted() {
-    this.fetchCustomers();
+    ];
   },
   methods: {
-    async fetchCustomers() {
-      return this.$axios({
-        method: 'get',
-        url: 'http://localhost:3000/api/dir/customers'
-      })
-        .then((response) => { this.tData = response.data; })
-        .catch((err) => {
-          this.$q.notify({
-            color: 'negative',
-            position: 'top',
-            message: `${err.message} = get http://localhost:3000/api/dir/customers`,
-            icon: 'report_problem'
-          });
-        });
-    }
   }
 };
 </script>
