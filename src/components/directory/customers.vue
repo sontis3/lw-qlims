@@ -1,13 +1,37 @@
 <template>
   <q-page>
     <q-table
-      title='Список заказчиков'
-      :data='tData'
-      :columns='columns'
-      row-key='name'
+      title="Список заказчиков"
+      :data="tData"
+      :columns="columns"
+      :visible-columns="visibleColumns"
+      :filter="filter"
+      row-key="name"
       dense
-      separator='cell'
-    />
+      separator="cell"
+    >
+    <template slot="top-left" slot-scope="props">
+      <q-search
+        hide-underline
+        color="secondary"
+        v-model="filter"
+        class="col-6"
+      />
+    </template>
+    <template slot="top-right" slot-scope="props">
+      <q-table-columns
+        color="secondary"
+        class="q-mr-sm"
+        v-model="visibleColumns"
+        :columns="columns"
+      />
+      <q-btn
+        flat round dense
+        :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+        @click="props.toggleFullscreen"
+      />
+    </template>
+    </q-table>
   </q-page>
 </template>
 
@@ -16,7 +40,7 @@ export default {
   data: () => ({
     columns: [
       {
-        name: 'name',
+        name: 'desc',
         required: true,
         label: 'Наименование заказчика',
         align: 'left',
@@ -25,7 +49,6 @@ export default {
       },
       {
         name: 'active',
-        required: true,
         label: 'Действующий',
         align: 'center',
         field: 'active',
@@ -33,7 +56,6 @@ export default {
       },
       {
         name: 'dateCreated',
-        required: true,
         label: 'Дата создания',
         align: 'center',
         field: 'dateCreated',
@@ -41,13 +63,14 @@ export default {
       },
       {
         name: 'dateUpdated',
-        required: true,
         label: 'Дата изменения',
         align: 'center',
         field: 'dateUpdated',
         sortable: true
       }
     ],
+    visibleColumns: ['desc', 'active', 'dateCreated', 'dateUpdated'],
+    filter: '',
     tData: []
   }),
 
