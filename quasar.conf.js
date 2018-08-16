@@ -63,14 +63,20 @@ module.exports = function (ctx) {
         'QItemMain',
         'QItemSide',
         'QSearch',
-        'QTableColumns'
+        'QTableColumns',
+        'QTr',
+        'QTh',
+        'QTd',
+        'QPopover'
       ],
       directives: [
-        'Ripple'
+        'Ripple',
+        'CloseOverlay'
       ],
       // Quasar plugins
       plugins: [
-        'Notify'
+        'Notify',
+        'Dialog'
       ]
       // iconSet: ctx.theme.mat ? 'material-icons' : 'ionicons'
       // i18n: 'de' // Quasar language

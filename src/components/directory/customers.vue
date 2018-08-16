@@ -26,7 +26,7 @@ export default {
   // хук когда компонент загружен
   mounted() {
     this.$refs.baseTable.getAll('http://localhost:3000/api/dir/customers');
-    this.visibleColumns = ['desc', 'active', 'dateCreated', 'dateUpdated'];
+    this.visibleColumns = ['desc', 'active', 'dateCreated', 'dateUpdated', 'row-actions'];
     this.columns = [
       {
         name: 'desc',
@@ -56,6 +56,13 @@ export default {
         align: 'center',
         field: 'dateUpdated',
         sortable: true
+      },
+      {
+        name: 'rowActions',
+        label: 'Действия',
+        align: 'left',
+        field: 'rowActions',
+        required: true
       }
     ];
   },
