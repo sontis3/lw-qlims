@@ -35,9 +35,10 @@
       </q-td>
       <q-td key="rowActions" :props="props">
         <q-btn round size="xs" icon="edit" @click="EditDocument(props.row)"/>
-        <q-btn round size="xs" icon="delete" @click="showing = true">
+        <q-btn round size="xs" icon="delete">
         <!-- <q-btn round size="xs" icon="delete" @click="DeleteDocument(props.row)"> -->
-          <q-popover anchor="bottom left" style="background-color:red">
+          <!-- <q-popover anchor="bottom left" style="background-color: red; min-width: 700px" @show="showPopover" ref="myRef"> -->
+          <q-popover anchor="bottom left" :style="popoverStyle" @show="showPopover">
             <span>Удаление документа</span>
             <q-btn outliner rounded dense size="form-label-inverted" color="red-14" text-color="white" label="Отменить" />
             <q-btn outliner rounded dense color="red-4" text-color="white" label="Удалить" />
@@ -83,8 +84,8 @@ export default {
         cancel: true
       });
     },
-    notify() {
-      this.$q.notify(`${(this.$q.platform.is.desktop ? 'Clicked' : 'Tapped')} on a Popover item`);
+    showPopover() {
+      this.$data.popoverStyle.minWidth = `${this.$el.querySelector('.q-table tbody tr').clientWidth}px`;
     },
     rowClick(row) {
       const idd = row.id;
@@ -93,7 +94,11 @@ export default {
   },
   data: () => ({
     filter: '',
-    ds: []
+    ds: [],
+    popoverStyle: {
+      backgroundColor: 'red',
+      minWidth: '0px'
+    }
   })
 };
 </script>

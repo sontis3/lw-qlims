@@ -60,7 +60,7 @@ export default {
       {
         name: 'rowActions',
         label: 'Действия',
-        align: 'left',
+        align: 'right',
         field: 'rowActions',
         required: true
       }
