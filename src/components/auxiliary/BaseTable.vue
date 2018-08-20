@@ -39,9 +39,11 @@
         <!-- <q-btn round size="xs" icon="delete" @click="DeleteDocument(props.row)"> -->
           <!-- <q-popover anchor="bottom left" style="background-color: red; min-width: 700px" @show="showPopover" ref="myRef"> -->
           <q-popover anchor="bottom left" :style="popoverStyle" @show="showPopover">
-            <span>Удаление документа</span>
-            <q-btn outliner rounded dense size="form-label-inverted" color="red-14" text-color="white" label="Отменить" />
-            <q-btn outliner rounded dense color="red-4" text-color="white" label="Удалить" />
+            <span>Документ выбран для удаления</span>
+            <div id="del-buttons">
+              <q-btn outliner rounded dense size="form-label-inverted" color="red-14" text-color="white" label="Отменить" />
+              <q-btn outliner rounded dense color="red-4" text-color="white" label="Удалить" />
+            </div>
           </q-popover>
         </q-btn>
       </q-td>
@@ -97,7 +99,9 @@ export default {
     ds: [],
     popoverStyle: {
       backgroundColor: 'red',
-      minWidth: '0px'
+      minWidth: '0px',
+      display: 'inline-flex',
+      flexWrap: 'nowrap'
     }
   })
 };
@@ -111,4 +115,16 @@ export default {
 .q-table tbody tr:hover {
   background-color: #b4d3d0;
 }
+
+.q-popover > span {
+  margin-left: 8px;
+}
+
+#del-buttons {
+  display: inline-flex;
+  margin-left: auto;
+  justify-content: space-around;
+  width: 176px;
+}
+
 </style>
