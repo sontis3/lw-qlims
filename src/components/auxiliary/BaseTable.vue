@@ -38,11 +38,11 @@
         <q-btn round size="xs" icon="delete">
         <!-- <q-btn round size="xs" icon="delete" @click="DeleteDocument(props.row)"> -->
           <!-- <q-popover anchor="bottom left" style="background-color: red; min-width: 700px" @show="showPopover" ref="myRef"> -->
-          <q-popover anchor="bottom left" :style="popoverStyle" @show="showPopover">
+          <q-popover anchor="bottom left" :style="popoverStyle" ref="delPopover" @show="showPopover">
             <span>Документ выбран для удаления</span>
             <div id="del-buttons">
-              <q-btn outliner rounded dense size="form-label-inverted" color="red-14" text-color="white" label="Отменить" />
-              <q-btn outliner rounded dense color="red-4" text-color="white" label="Удалить" />
+              <q-btn outliner rounded dense size="form-label-inverted" color="red-14" text-color="white" label="Отменить" v-close-overlay />
+              <q-btn outliner rounded dense color="red-4" text-color="white" label="Удалить" v-close-overlay @click="DeleteDocument(props.row)" />
             </div>
           </q-popover>
         </q-btn>
@@ -86,7 +86,11 @@ export default {
         cancel: true
       });
     },
+    CancelDelete() {
+      this.$refs.delPopover.hide();
+    },
     showPopover() {
+      // выставить ширину как у строки таблицы
       this.$data.popoverStyle.minWidth = `${this.$el.querySelector('.q-table tbody tr').clientWidth}px`;
     },
     rowClick(row) {
