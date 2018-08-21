@@ -55,23 +55,22 @@
 <script>
 export default {
   name: 'BaseDirTable',
+  // свойства базового компонента устанавливаются из потомков
   props: {
     title: String,
     columns: Array,
-    visibleColumns: Array
+    visibleColumns: Array,
+    baseUrl: String
   },
   methods: {
-    async getAll(apiUrl) {
-      return this.$axios({
-        method: 'get',
-        url: apiUrl
-      })
+    async getAll() {
+      this.$axios.get(this.baseUrl)
         .then((response) => { this.ds = response.data; })
         .catch((err) => {
           this.$q.notify({
             color: 'negative',
             position: 'top',
-            message: `${err.message} = get ${apiUrl}`,
+            message: `${err.message} = get ${this.baseUrl}`,
             icon: 'report_problem'
           });
         });
@@ -85,13 +84,14 @@ export default {
         ok: true,
         cancel: true
       });
+      this.$axios.delete(this.baseUrl + '/' + row._id);
     },
     CancelDelete() {
       this.$refs.delPopover.hide();
     },
     showPopover() {
       // выставить ширину как у строки таблицы
-      this.$data.popoverStyle.minWidth = `${this.$el.querySelector('.q-table tbody tr').clientWidth}px`;
+      this.popoverStyle.minWidth = `${this.$el.querySelector('.q-table tbody tr').clientWidth}px`;
     },
     rowClick(row) {
       const idd = row.id;

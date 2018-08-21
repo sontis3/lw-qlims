@@ -4,6 +4,7 @@
       :title="title"
       :columns="columns"
       :visibleColumns="visibleColumns"
+      :baseUrl="baseUrl"
       ref="baseTable"
     >
     </BaseDirTable>
@@ -20,12 +21,13 @@ export default {
   data: () => ({
     title: 'Список заказчиков',
     columns: [],
-    visibleColumns: []
+    visibleColumns: [],
+    baseUrl: 'http://localhost:3000/api/dir/customers'
   }),
 
   // хук когда компонент загружен
   mounted() {
-    this.$refs.baseTable.getAll('http://localhost:3000/api/dir/customers');
+    this.$refs.baseTable.getAll();
     this.visibleColumns = ['desc', 'active', 'dateCreated', 'dateUpdated', 'row-actions'];
     this.columns = [
       {
