@@ -64,27 +64,55 @@ export default {
   },
   methods: {
     async getAll() {
-      this.$axios.get(this.baseUrl)
+      await this.$axios.get(this.baseUrl)
         .then((response) => { this.ds = response.data; })
         .catch((err) => {
-          this.$q.notify({
-            color: 'negative',
-            position: 'top',
-            message: `${err.message} = get ${this.baseUrl}`,
-            icon: 'report_problem'
-          });
+          if (err.response) {
+            this.$q.notify({
+              color: 'negative',
+              position: 'top',
+              message: `Status: ${err.response.status}.  ${err.response.data.message} = get ${this.baseUrl}`,
+              icon: 'report_problem'
+            });
+          } else {
+            this.$q.notify({
+              color: 'negative',
+              position: 'top',
+              message: `${err.message} = get ${this.baseUrl}`,
+              icon: 'report_problem'
+            });
+          }
         });
     },
-    DeleteDocument(row) {
-      this.$q.dialog({
-        title: 'Удаление документа',
-        message: `Документ: ${row.name} будет удален!`,
-        color: 'negative',
-        preventClose: true,
-        ok: true,
-        cancel: true
-      });
-      this.$axios.delete(this.baseUrl + '/' + row._id);
+    /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+    async DeleteDocument(row) {
+      const url = `${this.baseUrl}/${row._id}`;
+      await this.$axios.delete(url)
+        .then(() => {
+          this.$q.notify({
+            color: 'positive',
+            position: 'top',
+            message: 'Документ успешно удален.',
+            icon: 'delete'
+          });
+        })
+        .catch((err) => {
+          if (err.response) {
+            this.$q.notify({
+              color: 'negative',
+              position: 'top',
+              message: `Status: ${err.response.status}.  ${err.response.data.message} = delete ${url}`,
+              icon: 'report_problem'
+            });
+          } else {
+            this.$q.notify({
+              color: 'negative',
+              position: 'top',
+              message: `${err.message} = delete ${url}`,
+              icon: 'report_problem'
+            });
+          }
+        });
     },
     CancelDelete() {
       this.$refs.delPopover.hide();
