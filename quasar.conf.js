@@ -67,7 +67,8 @@ module.exports = function (ctx) {
         'QTr',
         'QTh',
         'QTd',
-        'QPopover'
+        'QPopover',
+        'QDialog'
       ],
       directives: [
         'Ripple',

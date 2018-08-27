@@ -11,4 +11,9 @@ export const changeAction = (state, newAction) => {
   filter(state.currentMode.id, { field: 'modeId', list: state.allActions })[0].currentAction = newAction;
 };
 
+// скрыть/показать диалог добавления документа
+export const changeShowAddDialog = (state, newModel) => {
+  state.showAddDialog = newModel;
+};
+
 export { changeMode as default };

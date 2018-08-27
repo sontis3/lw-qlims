@@ -7,16 +7,21 @@
       :baseUrl="baseUrl"
       ref="baseTable"
     >
+    <template slot="addForm">
+      <AddForm />
+    </template>
     </BaseDirTable>
   </q-page>
 </template>
 
 <script>
 import BaseDirTable from '../auxiliary/BaseTable.vue';
+import AddForm from './customers/AddForm.vue';
 
 export default {
   components: {
-    BaseDirTable
+    BaseDirTable,
+    AddForm
   },
   data: () => ({
     title: 'Список заказчиков',

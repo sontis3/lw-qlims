@@ -26,5 +26,8 @@ export default {
         { id: 'Samples2', name: 'Образцы2' }
       ]
     }
-  ]
+  ],
+
+  // индикатор показа диалога добавления документа
+  showAddDialog: false
 };
