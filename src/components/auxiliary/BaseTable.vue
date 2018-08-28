@@ -133,34 +133,6 @@ export default {
     // создать документ
     AddDocument() {
       this.changeShowAddDialog(true);
-      // const url = `${this.baseUrl}/${row._id}`;
-      // await this.$axios.delete(url)
-      //   .then(() => {
-      //     this.$q.notify({
-      //       color: 'positive',
-      //       position: 'top',
-      //       message: 'Документ успешно удален.',
-      //       icon: 'delete'
-      //     });
-      //     this.getAll();
-      //   })
-      //   .catch((err) => {
-      //     if (err.response) {
-      //       this.$q.notify({
-      //         color: 'negative',
-      //         position: 'top',
-      //         message: `Status: ${err.response.status}.  ${err.response.data.message} = delete ${url}`,
-      //         icon: 'report_problem'
-      //       });
-      //     } else {
-      //       this.$q.notify({
-      //         color: 'negative',
-      //         position: 'top',
-      //         message: `${err.message} = delete ${url}`,
-      //         icon: 'report_problem'
-      //       });
-      //     }
-      //   });
     },
     // отмена удаления документа
     CancelDelete() {
