@@ -4,17 +4,20 @@
       :title="title"
       :columns="columns"
       :visibleColumns="visibleColumns"
-      :baseUrl="baseUrl"
+      :baseUrl="customersUrl"
       ref="baseTable"
     >
     <template slot="addForm">
-      <AddForm />
+      <AddForm :baseUrl="customersUrl" title="Добавление нового заказчика">
+      </AddForm>
     </template>
     </BaseDirTable>
   </q-page>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 import BaseDirTable from '../auxiliary/BaseTable.vue';
 import AddForm from './customers/AddForm.vue';
 
@@ -26,9 +29,14 @@ export default {
   data: () => ({
     title: 'Список заказчиков',
     columns: [],
-    visibleColumns: [],
-    baseUrl: 'http://localhost:3000/api/dir/customers'
+    visibleColumns: []
   }),
+
+  computed: {
+    ...mapGetters({
+      customersUrl: 'appMode/customersUrl'
+    })
+  },
 
   // хук когда компонент загружен
   mounted() {

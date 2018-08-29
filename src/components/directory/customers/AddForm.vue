@@ -6,12 +6,15 @@
     cancel="Cancel"
     @ok="onOk"
   >
-    <span slot="title">Добавление нового заказчика</span>
+
+    <span slot="title">{{title}}</span>
+
     <div slot="body">
-       <div class="row q-mb-md">
+      <!-- <slot name="bodyForm"></slot> -->
+      <div class="row q-mb-md">
         <q-input v-model="form.name" type="text" float-label="Наименование заказчика" />
       </div>
-       <div class="row q-mb-md">
+      <div class="row q-mb-md">
         <q-checkbox v-model="form.active" label="Активен" />
       </div>
     </div>
@@ -22,6 +25,11 @@
 import { mapState, mapMutations } from 'vuex';
 
 export default {
+  props: {
+    baseUrl: String,
+    title: String
+  },
+
   computed: {
     ...mapState({
       showAddDialog: state => state.appMode.showAddDialog
@@ -39,7 +47,7 @@ export default {
       changeShowAddDialog: 'appMode/changeShowAddDialog'
     }),
     async onOk() {
-      const url = 'http://localhost:3000/api/dir/customers';
+      const url = this.baseUrl;
       await this.$axios.post(url, this.form)
         .then((response) => {
           this.$q.notify({
