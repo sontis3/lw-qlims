@@ -38,22 +38,35 @@ export default {
     ...mapMutations({
       changeShowAddDialog: 'appMode/changeShowAddDialog'
     }),
-    onOk() {
-      this.$q.notify({
-        color: 'positive',
-        position: 'top',
-        message: 'OK.',
-        icon: 'save'
-      });
-    },
-
-    onCancel() {
-      this.$q.notify({
-        color: 'positive',
-        position: 'top',
-        message: 'Cancel.',
-        icon: 'delete'
-      });
+    async onOk() {
+      const url = 'http://localhost:3000/api/dir/customers';
+      await this.$axios.post(url, this.form)
+        .then((response) => {
+          this.$q.notify({
+            color: 'positive',
+            position: 'top',
+            message: `Документ '${response.data.name}' успешно создан.`,
+            icon: 'save'
+          });
+          // this.getAll();
+        })
+        .catch((err) => {
+          if (err.response) {
+            this.$q.notify({
+              color: 'negative',
+              position: 'top',
+              message: `Status: ${err.response.status}.  ${err.response.data.message} = post ${url}`,
+              icon: 'report_problem'
+            });
+          } else {
+            this.$q.notify({
+              color: 'negative',
+              position: 'top',
+              message: `${err.message} = post ${url}`,
+              icon: 'report_problem'
+            });
+          }
+        });
     }
   },
 

@@ -103,11 +103,11 @@ export default {
     async DeleteDocument(row) {
       const url = `${this.baseUrl}/${row._id}`;
       await this.$axios.delete(url)
-        .then(() => {
+        .then((response) => {
           this.$q.notify({
             color: 'positive',
             position: 'top',
-            message: 'Документ успешно удален.',
+            message: `Документ '${response.data.name}' успешно удален.`,
             icon: 'delete'
           });
           this.getAll();
