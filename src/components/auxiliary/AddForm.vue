@@ -50,7 +50,7 @@ export default {
             message: `Документ '${response.data.name}' успешно создан.`,
             icon: 'save'
           });
-          // this.getAll();
+          this.$root.$emit('changeDs');
         })
         .catch((err) => {
           if (err.response) {

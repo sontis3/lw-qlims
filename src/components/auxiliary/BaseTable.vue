@@ -71,6 +71,13 @@ export default {
     visibleColumns: Array,
     baseUrl: String
   },
+
+  mounted() {
+    this.$root.$on('changeDs', () => {
+      this.getAll();
+    });
+  },
+
   methods: {
     ...mapMutations({
       changeShowAddDialog: 'appMode/changeShowAddDialog'
