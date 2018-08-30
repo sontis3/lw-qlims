@@ -8,7 +8,15 @@
       ref="baseTable"
     >
     <template slot="addForm">
-      <AddForm :baseUrl="customersUrl" title="Добавление нового заказчика">
+      <AddForm :baseUrl="customersUrl" title="Добавление нового заказчика" :formFields="addFormFields">
+        <template slot="bodyForm">
+          <div class="row q-mb-md">
+            <q-input v-model="addFormFields.name" type="text" float-label="Наименование заказчика" />
+          </div>
+          <div class="row q-mb-md">
+            <q-checkbox v-model="addFormFields.active" label="Активен" />
+          </div>
+        </template>
       </AddForm>
     </template>
     </BaseDirTable>
@@ -19,7 +27,7 @@
 import { mapGetters } from 'vuex';
 
 import BaseDirTable from '../auxiliary/BaseTable.vue';
-import AddForm from './customers/AddForm.vue';
+import AddForm from '../auxiliary/AddForm.vue';
 
 export default {
   components: {
@@ -29,7 +37,12 @@ export default {
   data: () => ({
     title: 'Список заказчиков',
     columns: [],
-    visibleColumns: []
+    visibleColumns: [],
+    addFormFields: {
+      name: null,
+      active: true
+    }
+
   }),
 
   computed: {

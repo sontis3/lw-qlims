@@ -6,17 +6,10 @@
     cancel="Cancel"
     @ok="onOk"
   >
-
     <span slot="title">{{title}}</span>
 
     <div slot="body">
-      <!-- <slot name="bodyForm"></slot> -->
-      <div class="row q-mb-md">
-        <q-input v-model="form.name" type="text" float-label="Наименование заказчика" />
-      </div>
-      <div class="row q-mb-md">
-        <q-checkbox v-model="form.active" label="Активен" />
-      </div>
+      <slot name="bodyForm"></slot>
     </div>
   </q-dialog>
 </template>
@@ -27,7 +20,8 @@ import { mapState, mapMutations } from 'vuex';
 export default {
   props: {
     baseUrl: String,
-    title: String
+    title: String,
+    formFields: Object
   },
 
   computed: {
@@ -48,7 +42,7 @@ export default {
     }),
     async onOk() {
       const url = this.baseUrl;
-      await this.$axios.post(url, this.form)
+      await this.$axios.post(url, this.formFields)
         .then((response) => {
           this.$q.notify({
             color: 'positive',
@@ -76,14 +70,7 @@ export default {
           }
         });
     }
-  },
-
-  data: () => ({
-    form: {
-      name: null,
-      active: true
-    }
-  })
+  }
 };
 </script>
 
