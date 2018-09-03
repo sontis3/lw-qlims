@@ -29,10 +29,5 @@ export default {
   ],
 
   // индикатор показа диалога добавления документа
-  showAddDialog: false,
-
-  // адреса web API
-  apiUrl: 'http://localhost:3000/api',
-  dirPartUrl: 'dir',
-  customersPartUrl: 'customers'
+  showAddDialog: false
 };

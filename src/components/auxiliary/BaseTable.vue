@@ -2,7 +2,7 @@
   <div>
     <q-table
       :title="title"
-      :data="ds"
+      :data="ds1"
       :columns="columns"
       :visible-columns="visibleColumns"
       :filter="filter"
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'BaseDirTable',
@@ -69,7 +69,8 @@ export default {
     title: String,
     columns: Array,
     visibleColumns: Array,
-    baseUrl: String
+    baseUrl: String,
+    ds: Array
   },
 
   mounted() {
@@ -78,63 +79,71 @@ export default {
     });
   },
 
+  computed: {
+    // ...mapState({
+    //   ds: state => state.ds.dsCustomers
+    // }),
+
+    // флаг показа диалога
+    ds1: {
+      get() { return this.ds; }
+      // ,
+      // set(newValue) { this.changeShowAddDialog(newValue); }
+    }
+  },
+
   methods: {
     ...mapMutations({
       changeShowAddDialog: 'appMode/changeShowAddDialog'
     }),
 
+    ...mapActions({
+      getDs: 'ds/getDs',
+      deleteCustomer: 'ds/deleteCustomer'
+    }),
+
+    getErrorMessage(httpMethod, url, err) {
+      if (err.response) {
+        return `Status: ${err.response.status}.  ${err.response.data.message} = ${httpMethod} ${url}`;
+      }
+      return `${err.message} = ${httpMethod} ${url}`;
+    },
+
     // показать все документы
     async getAll() {
-      await this.$axios.get(this.baseUrl)
-        .then((response) => { this.ds = response.data; })
-        .catch((err) => {
-          if (err.response) {
-            this.$q.notify({
-              color: 'negative',
-              position: 'top',
-              message: `Status: ${err.response.status}.  ${err.response.data.message} = get ${this.baseUrl}`,
-              icon: 'report_problem'
-            });
-          } else {
-            this.$q.notify({
-              color: 'negative',
-              position: 'top',
-              message: `${err.message} = get ${this.baseUrl}`,
-              icon: 'report_problem'
-            });
-          }
+      const res = this.getDs();
+      res.catch((err) => {
+        const errMessage = this.getErrorMessage('get', this.baseUrl, err);
+        this.$q.notify({
+          color: 'negative',
+          position: 'top',
+          message: errMessage,
+          icon: 'report_problem'
         });
+      });
     },
     /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
     // удалить документ
     async DeleteDocument(row) {
-      const url = `${this.baseUrl}/${row._id}`;
-      await this.$axios.delete(url)
-        .then((response) => {
-          this.$q.notify({
-            color: 'positive',
-            position: 'top',
-            message: `Документ '${response.data.name}' успешно удален.`,
-            icon: 'delete'
-          });
-          this.getAll();
-        })
+      const res = this.deleteCustomer(row._id);
+      res.then((response) => {
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: `Документ '${response.data.name}' успешно удален.`,
+          icon: 'delete'
+        });
+      })
         .catch((err) => {
-          if (err.response) {
-            this.$q.notify({
-              color: 'negative',
-              position: 'top',
-              message: `Status: ${err.response.status}.  ${err.response.data.message} = delete ${url}`,
-              icon: 'report_problem'
-            });
-          } else {
-            this.$q.notify({
-              color: 'negative',
-              position: 'top',
-              message: `${err.message} = delete ${url}`,
-              icon: 'report_problem'
-            });
-          }
+          /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
+          const url = err.config.url;
+          const errMessage = this.getErrorMessage('delete', url, err);
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: errMessage,
+            icon: 'report_problem'
+          });
         });
     },
     // создать документ
@@ -157,7 +166,7 @@ export default {
   },
   data: () => ({
     filter: '',
-    ds: [],
+    // ds: [],
     popoverStyle: {
       backgroundColor: 'red',
       minWidth: '0px',

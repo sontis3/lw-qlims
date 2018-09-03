@@ -5,6 +5,7 @@
       :columns="columns"
       :visibleColumns="visibleColumns"
       :baseUrl="customersUrl"
+      :ds="ds"
       ref="baseTable"
     >
     <template slot="addForm">
@@ -24,7 +25,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 import BaseDirTable from '../auxiliary/BaseTable.vue';
 import AddForm from '../auxiliary/AddForm.vue';
@@ -46,8 +47,11 @@ export default {
   }),
 
   computed: {
+    ...mapState({
+      ds: state => state.ds.dsCustomers
+    }),
     ...mapGetters({
-      customersUrl: 'appMode/customersUrl'
+      customersUrl: 'ds/customersUrl'
     })
   },
 
@@ -94,6 +98,7 @@ export default {
       }
     ];
   },
+
   methods: {
   }
 };
