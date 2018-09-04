@@ -1,4 +1,4 @@
-// установить новый источник данных
+// установить новый источник данных Заказчики
 export const setDsCustomers = (state, newDs) => {
   state.dsCustomers = newDs;
 };

@@ -4,12 +4,11 @@
       :title="title"
       :columns="columns"
       :visibleColumns="visibleColumns"
-      :baseUrl="customersUrl"
       :ds="ds"
       ref="baseTable"
     >
     <template slot="addForm">
-      <AddForm :baseUrl="customersUrl" title="Добавление нового заказчика" :formFields="addFormFields">
+      <AddForm title="Добавление нового заказчика" :formFields="addFormFields">
         <template slot="bodyForm">
           <div class="row q-mb-md">
             <q-input v-model="addFormFields.name" type="text" float-label="Наименование заказчика" />
@@ -25,7 +24,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 
 import BaseDirTable from '../auxiliary/BaseTable.vue';
 import AddForm from '../auxiliary/AddForm.vue';
@@ -51,13 +50,32 @@ export default {
       ds: state => state.ds.dsCustomers
     }),
     ...mapGetters({
-      customersUrl: 'ds/customersUrl'
+      getErrorMessage: 'appMode/getErrorMessage'
+    })
+  },
+
+  methods: {
+    ...mapActions({
+      getCustomers: 'ds/getCustomers',
+      deleteCustomer: 'ds/deleteCustomer'
     })
   },
 
   // хук когда компонент загружен
   mounted() {
-    this.$refs.baseTable.getAll();
+    const res = this.getCustomers();
+    res.catch((err) => {
+      /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
+      const url = err.config.url;
+      const errMessage = this.getErrorMessage('get', url, err);
+      this.$q.notify({
+        color: 'negative',
+        position: 'top',
+        message: errMessage,
+        icon: 'report_problem'
+      });
+    });
+
     this.visibleColumns = ['desc', 'active', 'dateCreated', 'dateUpdated', 'row-actions'];
     this.columns = [
       {
@@ -97,9 +115,6 @@ export default {
         required: true
       }
     ];
-  },
-
-  methods: {
   }
 };
 </script>

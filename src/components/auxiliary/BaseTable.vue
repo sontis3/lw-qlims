@@ -44,7 +44,7 @@
           <q-btn round size="xs" icon="delete">
           <!-- <q-btn round size="xs" icon="delete" @click="DeleteDocument(props.row)"> -->
             <!-- <q-popover anchor="bottom left" style="background-color: red; min-width: 700px" @show="showPopover" ref="myRef"> -->
-            <q-popover anchor="bottom left" :style="popoverStyle" ref="delPopover" @show="showPopover">
+            <q-popover anchor="bottom left" :style="popoverStyle" @show="showPopover">
               <span>Документ выбран для удаления</span>
               <div id="del-buttons">
                 <q-btn outliner rounded dense size="form-label-inverted" color="red-14" text-color="white" label="Отменить" v-close-overlay />
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'BaseDirTable',
@@ -69,20 +69,19 @@ export default {
     title: String,
     columns: Array,
     visibleColumns: Array,
-    baseUrl: String,
     ds: Array
   },
 
-  mounted() {
-    this.$root.$on('changeDs', () => {
-      this.getAll();
-    });
-  },
+  // mounted() {
+  //   this.$root.$on('changeDs', () => {
+  //     this.getAll();
+  //   });
+  // },
 
   computed: {
-    // ...mapState({
-    //   ds: state => state.ds.dsCustomers
-    // }),
+    ...mapGetters({
+      getErrorMessage: 'appMode/getErrorMessage'
+    }),
 
     // флаг показа диалога
     ds1: {
@@ -98,30 +97,33 @@ export default {
     }),
 
     ...mapActions({
-      getDs: 'ds/getDs',
+      // getCustomers: 'ds/getCustomers',
       deleteCustomer: 'ds/deleteCustomer'
     }),
 
-    getErrorMessage(httpMethod, url, err) {
-      if (err.response) {
-        return `Status: ${err.response.status}.  ${err.response.data.message} = ${httpMethod} ${url}`;
-      }
-      return `${err.message} = ${httpMethod} ${url}`;
-    },
+    // getErrorMessage(httpMethod, url, err) {
+    //   if (err.response) {
+    //     return `Status: ${err.response.status}.  ${err.response.data.message} = ${httpMethod} ${url}`;
+    //   }
+    //   return `${err.message} = ${httpMethod} ${url}`;
+    // },
 
     // показать все документы
-    async getAll() {
-      const res = this.getDs();
-      res.catch((err) => {
-        const errMessage = this.getErrorMessage('get', this.baseUrl, err);
-        this.$q.notify({
-          color: 'negative',
-          position: 'top',
-          message: errMessage,
-          icon: 'report_problem'
-        });
-      });
-    },
+    // async getAll() {
+    //   const res = this.getCustomers();
+    //   res.catch((err) => {
+    //     /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
+    //     const url = err.config.url;
+    //     const errMessage = this.getErrorMessage('get', url, err);
+    //     this.$q.notify({
+    //       color: 'negative',
+    //       position: 'top',
+    //       message: errMessage,
+    //       icon: 'report_problem'
+    //     });
+    //   });
+    // },
+
     /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
     // удалить документ
     async DeleteDocument(row) {
@@ -149,10 +151,6 @@ export default {
     // создать документ
     AddDocument() {
       this.changeShowAddDialog(true);
-    },
-    // отмена удаления документа
-    CancelDelete() {
-      this.$refs.delPopover.hide();
     },
     showPopover() {
       // выставить ширину как у строки таблицы

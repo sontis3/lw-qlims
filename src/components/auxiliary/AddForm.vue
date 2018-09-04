@@ -15,11 +15,10 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 
 export default {
   props: {
-    baseUrl: String,
     title: String,
     formFields: Object
   },
@@ -41,6 +40,10 @@ export default {
       changeShowAddDialog: 'appMode/changeShowAddDialog'
     }),
 
+    ...mapActions({
+      addCustomer: 'ds/addCustomer'
+    }),
+
     getErrorMessage(httpMethod, url, err) {
       if (err.response) {
         return `Status: ${err.response.status}.  ${err.response.data.message} = ${httpMethod} ${url}`;
@@ -49,18 +52,18 @@ export default {
     },
 
     async onOk() {
-      const url = this.baseUrl;
-      await this.$axios.post(url, this.formFields)
-        .then((response) => {
-          this.$q.notify({
-            color: 'positive',
-            position: 'top',
-            message: `Документ '${response.data.name}' успешно создан.`,
-            icon: 'save'
-          });
-          this.$root.$emit('changeDs');
-        })
+      const res = this.addCustomer(this.formFields);
+      res.then((response) => {
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: `Документ '${response.data.name}' успешно создан.`,
+          icon: 'save'
+        });
+      })
         .catch((err) => {
+          /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
+          const url = err.config.url;
           const errMessage = this.getErrorMessage('post', url, err);
           this.$q.notify({
             color: 'negative',
@@ -69,6 +72,26 @@ export default {
             icon: 'report_problem'
           });
         });
+      // const url = this.baseUrl;
+      // await this.$axios.post(url, this.formFields)
+      //   .then((response) => {
+      //     this.$q.notify({
+      //       color: 'positive',
+      //       position: 'top',
+      //       message: `Документ '${response.data.name}' успешно создан.`,
+      //       icon: 'save'
+      //     });
+      //     this.$root.$emit('changeDs');
+      //   })
+      //   .catch((err) => {
+      //     const errMessage = this.getErrorMessage('post', url, err);
+      //     this.$q.notify({
+      //       color: 'negative',
+      //       position: 'top',
+      //       message: errMessage,
+      //       icon: 'report_problem'
+      //     });
+      //   });
     }
   }
 };
