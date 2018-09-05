@@ -13,7 +13,7 @@
             <q-input v-model="addFormFields.name" type="text" float-label="Наименование заказчика" />
           </div>
           <div class="row q-mb-md">
-            <q-checkbox v-model="addFormFields.active" label="Активен" />
+            <q-checkbox v-model="addFormFields.enabled" label="Активен" />
           </div>
         </template>
       </AddForm>
@@ -45,10 +45,10 @@ export default {
         sortable: true
       },
       {
-        name: 'active',
+        name: 'enabled',
         label: 'Действующий',
         align: 'center',
-        field: 'active',
+        field: 'enabled',
         sortable: true
       },
       {
@@ -73,10 +73,10 @@ export default {
         required: true
       }
     ],
-    visibleColumns: ['desc', 'active', 'dateCreated', 'dateUpdated', 'row-actions'],
+    visibleColumns: ['desc', 'enabled', 'dateCreated', 'dateUpdated', 'row-actions'],
     addFormFields: {
       name: null,
-      active: true
+      enabled: true
     }
 
   }),
