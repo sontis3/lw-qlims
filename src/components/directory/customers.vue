@@ -5,7 +5,6 @@
       :columns="columns"
       :visibleColumns="visibleColumns"
       :ds="ds"
-      ref="baseTable"
     >
     <template slot="addForm">
       <AddForm title="Добавление нового заказчика" :formFields="addFormFields">
@@ -36,48 +35,7 @@ export default {
   },
   data: () => ({
     title: 'Список заказчиков',
-    columns: [],
-    visibleColumns: [],
-    addFormFields: {
-      name: null,
-      active: true
-    }
-
-  }),
-
-  computed: {
-    ...mapState({
-      ds: state => state.ds.dsCustomers
-    }),
-    ...mapGetters({
-      getErrorMessage: 'appMode/getErrorMessage'
-    })
-  },
-
-  methods: {
-    ...mapActions({
-      getCustomers: 'ds/getCustomers',
-      deleteCustomer: 'ds/deleteCustomer'
-    })
-  },
-
-  // хук когда компонент загружен
-  mounted() {
-    const res = this.getCustomers();
-    res.catch((err) => {
-      /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
-      const url = err.config.url;
-      const errMessage = this.getErrorMessage('get', url, err);
-      this.$q.notify({
-        color: 'negative',
-        position: 'top',
-        message: errMessage,
-        icon: 'report_problem'
-      });
-    });
-
-    this.visibleColumns = ['desc', 'active', 'dateCreated', 'dateUpdated', 'row-actions'];
-    this.columns = [
+    columns: [
       {
         name: 'desc',
         required: true,
@@ -114,7 +72,72 @@ export default {
         field: 'rowActions',
         required: true
       }
-    ];
+    ],
+    visibleColumns: ['desc', 'active', 'dateCreated', 'dateUpdated', 'row-actions'],
+    addFormFields: {
+      name: null,
+      active: true
+    }
+
+  }),
+
+  computed: {
+    ...mapState({
+      // источник данных
+      ds: state => state.ds.dsCustomers
+    }),
+    ...mapGetters({
+      getErrorMessage: 'appMode/getErrorMessage'
+    })
+  },
+
+  methods: {
+    ...mapActions({
+      getCustomers: 'ds/getCustomers',
+      deleteCustomer: 'ds/deleteCustomer'
+    }),
+
+    // удалить документ
+    DeleteDocument(id) {
+      const res = this.deleteCustomer(id);
+      res.then((response) => {
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: `Документ '${response.data.name}' успешно удален.`,
+          icon: 'delete'
+        });
+      })
+        .catch((err) => {
+          /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
+          const url = err.config.url;
+          const errMessage = this.getErrorMessage('delete', url, err);
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: errMessage,
+            icon: 'report_problem'
+          });
+        });
+    }
+  },
+
+  // хук когда компонент загружен
+  mounted() {
+    this.$root.$on('deleteDocument', this.DeleteDocument);
+
+    const res = this.getCustomers();
+    res.catch((err) => {
+      /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
+      const url = err.config.url;
+      const errMessage = this.getErrorMessage('get', url, err);
+      this.$q.notify({
+        color: 'negative',
+        position: 'top',
+        message: errMessage,
+        icon: 'report_problem'
+      });
+    });
   }
 };
 </script>
