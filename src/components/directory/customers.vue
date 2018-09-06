@@ -23,7 +23,12 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import {
+  mapState,
+  mapGetters,
+  mapMutations,
+  mapActions
+} from 'vuex';
 
 import BaseDirTable from '../auxiliary/BaseTable.vue';
 import AddForm from '../auxiliary/AddForm.vue';
@@ -92,6 +97,9 @@ export default {
   },
 
   methods: {
+    ...mapMutations({
+      setLoading: 'ds/setLoading'
+    }),
     ...mapActions({
       getCustomers: 'ds/getCustomers',
       deleteCustomer: 'ds/deleteCustomer'
@@ -99,6 +107,7 @@ export default {
 
     // удалить документ
     DeleteDocument(id) {
+      this.setLoading(true);
       const res = this.deleteCustomer(id);
       res.then((response) => {
         this.$q.notify({
@@ -126,7 +135,10 @@ export default {
   mounted() {
     this.$root.$on('deleteDocument', this.DeleteDocument);
 
+    this.setLoading(true);
     const res = this.getCustomers();
+    this.setLoading(false);
+
     res.catch((err) => {
       /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
       const url = err.config.url;

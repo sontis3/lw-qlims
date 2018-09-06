@@ -6,6 +6,7 @@
       :columns="columns"
       :visible-columns="visibleColumns"
       :filter="filter"
+      :loading="isLoading"
       row-key="name"
       dense
       separator="cell"
@@ -58,7 +59,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
+import { mapState, mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'BaseDirTable',
@@ -71,6 +72,10 @@ export default {
   },
 
   computed: {
+    ...mapState({
+      isLoading: state => state.ds.isLoading
+    }),
+
     ...mapGetters({
       getErrorMessage: 'appMode/getErrorMessage'
     }),

@@ -5,5 +5,8 @@ export default {
   customersPartUrl: 'customers',
 
   // источники данных
-  dsCustomers: []
+  dsCustomers: [],
+
+  // индикатор загрузки данных
+  isLoading: false
 };
