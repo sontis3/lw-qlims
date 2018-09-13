@@ -29,4 +29,20 @@ export const addCustomer = async ({ commit, getters, dispatch }, customerObj) =>
   return response;
 };
 
+// изменить заказчика
+export const updateCustomer = async ({ commit, getters, dispatch }, customerObj) => {
+  /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+  const url = `${getters.customersUrl}/${customerObj._id}`;
+
+  // const obj = {
+  //   enabled: customerObj.enabled
+  // };
+
+  const header = { 'Content-type': 'application/json' };
+  const response = await axios.put(url, customerObj, { headers: header });
+  await dispatch('getCustomers');
+  commit('setLoading', false);
+  return response;
+};
+
 export { getCustomers as default };

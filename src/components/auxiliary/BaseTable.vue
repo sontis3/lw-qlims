@@ -38,7 +38,13 @@
       <!-- <q-tr slot="body" slot-scope="props" :props="props" @click.native="rowClick(props.row)" class="cursor-pointer"> -->
       <q-tr slot="body" slot-scope="props" :props="props">
         <q-td v-for="col in props.cols" v-if="col.name !== 'rowActions'" :key="col.name" :props="props">
-          {{ col.value }}
+          <template v-if="col.classes !== 'as-checkbox'">
+            {{ col.value }}
+          </template>
+          <template :props="props" v-else>
+            <q-checkbox v-model="props.row[col.name]" @input="UpdateDocument(props.row, col.name)"/>
+            <!-- <q-checkbox :value="props.row[col.name]" @change="val => { props.row[col.name] = val; UpdateDocument(props.row) }"/> -->
+          </template>
         </q-td>
         <q-td key="rowActions" :props="props">
           <q-btn round size="xs" icon="edit" @click="EditDocument(props.row)"/>
@@ -101,6 +107,14 @@ export default {
     // создать документ
     AddDocument() {
       this.changeShowAddDialog(true);
+    },
+    /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+    // удалить документ
+    UpdateDocument(row, cname) {
+      this.$root.$emit('updateDocument', row, cname);
+      // row[cname] = !row[cname];
+      // const q = row[cname];
+      // console.log(q);
     },
     showPopover() {
       // выставить ширину как у строки таблицы

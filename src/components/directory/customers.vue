@@ -54,7 +54,9 @@ export default {
         label: 'Действующий',
         align: 'center',
         field: 'enabled',
-        sortable: true
+        sortable: true,
+        sort: (a, b) => a - b,
+        classes: 'as-checkbox'
       },
       {
         name: 'dateCreated',
@@ -102,7 +104,8 @@ export default {
     }),
     ...mapActions({
       getCustomers: 'ds/getCustomers',
-      deleteCustomer: 'ds/deleteCustomer'
+      deleteCustomer: 'ds/deleteCustomer',
+      updateCustomer: 'ds/updateCustomer'
     }),
 
     // удалить документ
@@ -128,12 +131,41 @@ export default {
             icon: 'report_problem'
           });
         });
+      this.setLoading(false);
+    },
+
+    // изменить документ
+    UpdateDocument(customerObj) {
+      this.setLoading(true);
+      const res = this.updateCustomer(customerObj);
+      res.then((response) => {
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: `Документ '${response.data.name}' успешно изменен.`,
+          icon: 'update'
+        });
+      })
+        .catch((err) => {
+          /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
+          const url = err.config.url;
+          const errMessage = this.getErrorMessage('put', url, err);
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: errMessage,
+            icon: 'report_problem'
+          });
+        });
+      this.setLoading(false);
     }
+
   },
 
   // хук когда компонент загружен
   mounted() {
     this.$root.$on('deleteDocument', this.DeleteDocument);
+    this.$root.$on('updateDocument', this.UpdateDocument);
 
     this.setLoading(true);
     const res = this.getCustomers();
