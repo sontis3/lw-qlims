@@ -4,33 +4,33 @@ import axios from 'axios';
 export const getCustomers = async ({ commit, getters }) => {
   const response = await axios.get(getters.customersUrl);
   commit('setDsCustomers', response.data);
-  commit('setLoading', false);
+  // commit('setLoading', false);
   return response;
 };
 
 // удалить заказчика
-export const deleteCustomer = async ({ commit, getters, dispatch }, id) => {
+export const deleteCustomer = async ({ getters, dispatch }, id) => {
   const custUrl = getters.customersUrl;
   const url = `${custUrl}/${id}`;
 
   const response = await axios.delete(url);
   await dispatch('getCustomers');
-  commit('setLoading', false);
+  // commit('setLoading', false);
   return response;
 };
 
 // добавить заказчика
-export const addCustomer = async ({ commit, getters, dispatch }, customerObj) => {
+export const addCustomer = async ({ getters, dispatch }, customerObj) => {
   const url = getters.customersUrl;
 
   const response = await axios.post(url, customerObj);
   await dispatch('getCustomers');
-  commit('setLoading', false);
+  // commit('setLoading', false);
   return response;
 };
 
 // изменить заказчика
-export const updateCustomer = async ({ commit, getters, dispatch }, customerObj) => {
+export const updateCustomer = async ({ getters, dispatch }, customerObj) => {
   const url = `${getters.customersUrl}/${customerObj.id}`;
 
   const obj = {
@@ -41,7 +41,7 @@ export const updateCustomer = async ({ commit, getters, dispatch }, customerObj)
   const header = { 'Content-type': 'application/json' };
   const response = await axios.put(url, obj, { headers: header });
   await dispatch('getCustomers');
-  commit('setLoading', false);
+  // commit('setLoading', false);
   return response;
 };
 

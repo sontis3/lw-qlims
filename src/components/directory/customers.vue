@@ -176,20 +176,21 @@ export default {
     this.setLoading(true);
     const res = this.getCustomers();
 
-    res.catch((err) => {
-      /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
-      const url = err.config.url;
-      const errMessage = this.getErrorMessage('get', url, err);
-      this.$q.notify({
-        color: 'negative',
-        position: 'top',
-        message: errMessage,
-        icon: 'report_problem'
-      })
-        .finally(() => {
-          this.setLoading(false);
+    res.then(() => {})
+      .catch((err) => {
+        /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
+        const url = err.config.url;
+        const errMessage = this.getErrorMessage('get', url, err);
+        this.$q.notify({
+          color: 'negative',
+          position: 'top',
+          message: errMessage,
+          icon: 'report_problem'
         });
-    });
+      })
+      .finally(() => {
+        this.setLoading(false);
+      });
   }
 };
 </script>
