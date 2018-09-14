@@ -43,7 +43,6 @@
           </template>
           <template :props="props" v-else>
             <q-checkbox v-model="props.row[col.name]" @input="UpdateDocument(props.row, col.name)"/>
-            <!-- <q-checkbox :value="props.row[col.name]" @change="val => { props.row[col.name] = val; UpdateDocument(props.row) }"/> -->
           </template>
         </q-td>
         <q-td key="rowActions" :props="props">
@@ -65,7 +64,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: 'BaseDirTable',
@@ -80,10 +79,6 @@ export default {
   computed: {
     ...mapState({
       isLoading: state => state.ds.isLoading
-    }),
-
-    ...mapGetters({
-      getErrorMessage: 'appMode/getErrorMessage'
     }),
 
     // источник данных для таблицы

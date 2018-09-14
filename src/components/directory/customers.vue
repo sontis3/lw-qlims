@@ -130,8 +130,10 @@ export default {
             message: errMessage,
             icon: 'report_problem'
           });
+        })
+        .finally(() => {
+          this.setLoading(false);
         });
-      this.setLoading(false);
     },
 
     // изменить документ
@@ -156,8 +158,12 @@ export default {
             message: errMessage,
             icon: 'report_problem'
           });
+        })
+        .finally(() => {
+          // принудительное обновление документов необходимо, т.к. чекбокс при ощибке остается в неправильном состоянии
+          this.getCustomers();
+          this.setLoading(false);
         });
-      this.setLoading(false);
     }
 
   },
@@ -169,7 +175,6 @@ export default {
 
     this.setLoading(true);
     const res = this.getCustomers();
-    this.setLoading(false);
 
     res.catch((err) => {
       /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
@@ -180,7 +185,10 @@ export default {
         position: 'top',
         message: errMessage,
         icon: 'report_problem'
-      });
+      })
+        .finally(() => {
+          this.setLoading(false);
+        });
     });
   }
 };

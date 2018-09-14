@@ -31,15 +31,15 @@ export const addCustomer = async ({ commit, getters, dispatch }, customerObj) =>
 
 // изменить заказчика
 export const updateCustomer = async ({ commit, getters, dispatch }, customerObj) => {
-  /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
-  const url = `${getters.customersUrl}/${customerObj._id}`;
+  const url = `${getters.customersUrl}/${customerObj.id}`;
 
-  // const obj = {
-  //   enabled: customerObj.enabled
-  // };
+  const obj = {
+    name: customerObj.name,
+    enabled: customerObj.enabled
+  };
 
   const header = { 'Content-type': 'application/json' };
-  const response = await axios.put(url, customerObj, { headers: header });
+  const response = await axios.put(url, obj, { headers: header });
   await dispatch('getCustomers');
   commit('setLoading', false);
   return response;

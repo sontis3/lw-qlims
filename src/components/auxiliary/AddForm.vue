@@ -15,7 +15,12 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex';
+import {
+  mapState,
+  mapGetters,
+  mapMutations,
+  mapActions
+} from 'vuex';
 
 export default {
   props: {
@@ -26,6 +31,9 @@ export default {
   computed: {
     ...mapState({
       showAddDialog: state => state.appMode.showAddDialog
+    }),
+    ...mapGetters({
+      getErrorMessage: 'appMode/getErrorMessage'
     }),
 
     // флаг показа диалога
@@ -39,17 +47,9 @@ export default {
     ...mapMutations({
       changeShowAddDialog: 'appMode/changeShowAddDialog'
     }),
-
     ...mapActions({
       addCustomer: 'ds/addCustomer'
     }),
-
-    getErrorMessage(httpMethod, url, err) {
-      if (err.response) {
-        return `Status: ${err.response.status}.  ${err.response.data.message} = ${httpMethod} ${url}`;
-      }
-      return `${err.message} = ${httpMethod} ${url}`;
-    },
 
     async onOk() {
       const res = this.addCustomer(this.formFields);
