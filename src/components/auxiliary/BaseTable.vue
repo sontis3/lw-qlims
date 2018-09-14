@@ -102,13 +102,12 @@ export default {
     /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
     // удалить документ
     DeleteDocument(row) {
-      this.$root.$emit('deleteDocument', row._id);
+      this.$root.$emit('deleteDocument', row.id);
     },
     // создать документ
     AddDocument() {
       this.changeShowAddDialog(true);
     },
-    /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
     // удалить документ
     UpdateDocument(row, cname) {
       this.$root.$emit('updateDocument', row, cname);
