@@ -43,7 +43,7 @@
           </template>
           <template v-else-if="col.classes === 'popup-edit'">
             {{ col.value }}
-            <q-popup-edit v-model="props.row.name" @save="UpdateDocument(props.row, col.name)" @cancel="Cancel()">
+            <q-popup-edit v-model="props.row.name" @save="UpdateDocument(props.row, col.name)">
               <q-field count>
                 <q-input v-model="props.row.name" />
               </q-field>
@@ -111,7 +111,6 @@ export default {
     AddDocument() {
       this.changeShowAddDialog(true);
     },
-    Cancel() {},
     // удалить документ
     UpdateDocument(row, cname) {
       this.$root.$emit('updateDocument', row, cname);
