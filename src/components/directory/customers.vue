@@ -47,7 +47,8 @@ export default {
         label: 'Наименование заказчика',
         align: 'left',
         field: 'name',
-        sortable: true
+        sortable: true,
+        classes: 'popup-edit'
       },
       {
         name: 'enabled',

@@ -38,11 +38,19 @@
       <!-- <q-tr slot="body" slot-scope="props" :props="props" @click.native="rowClick(props.row)" class="cursor-pointer"> -->
       <q-tr slot="body" slot-scope="props" :props="props">
         <q-td v-for="col in props.cols" v-if="col.name !== 'rowActions'" :key="col.name" :props="props">
-          <template v-if="col.classes !== 'as-checkbox'">
-            {{ col.value }}
-          </template>
-          <template :props="props" v-else>
+          <template v-if="col.classes === 'as-checkbox'" :props="props">
             <q-checkbox v-model="props.row[col.name]" @input="UpdateDocument(props.row, col.name)"/>
+          </template>
+          <template v-else-if="col.classes === 'popup-edit'">
+            {{ col.value }}
+            <q-popup-edit v-model="props.row.name" @save="UpdateDocument(props.row, col.name)" @cancel="Cancel()">
+              <q-field count>
+                <q-input v-model="props.row.name" />
+              </q-field>
+            </q-popup-edit>
+          </template>
+          <template v-else>
+            {{ col.value }}
           </template>
         </q-td>
         <q-td key="rowActions" :props="props">
@@ -103,6 +111,7 @@ export default {
     AddDocument() {
       this.changeShowAddDialog(true);
     },
+    Cancel() {},
     // удалить документ
     UpdateDocument(row, cname) {
       this.$root.$emit('updateDocument', row, cname);
