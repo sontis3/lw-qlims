@@ -67,12 +67,11 @@
         </q-td>
       </q-tr>
     </q-table>
-    <slot name="addForm"></slot>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'BaseDirTable',
@@ -98,9 +97,9 @@ export default {
   },
 
   methods: {
-    ...mapMutations({
-      changeShowAddDialog: 'appMode/changeShowAddDialog'
-    }),
+    // ...mapMutations({
+    //   changeShowAddDialog: 'appMode/changeShowAddDialog'
+    // }),
 
     /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
     // удалить документ
@@ -109,14 +108,12 @@ export default {
     },
     // создать документ
     AddDocument() {
-      this.changeShowAddDialog(true);
+      this.$root.$emit('addDocument');
+      // this.changeShowAddDialog(true);
     },
-    // удалить документ
+    // изменить документ
     UpdateDocument(row, cname) {
       this.$root.$emit('updateDocument', row, cname);
-      // row[cname] = !row[cname];
-      // const q = row[cname];
-      // console.log(q);
     },
     showPopover() {
       // выставить ширину как у строки таблицы

@@ -6,19 +6,25 @@
       :visibleColumns="visibleColumns"
       :ds="ds"
     >
-    <template slot="addForm">
-      <AddForm title="Добавление нового заказчика" :formFields="addFormFields">
-        <template slot="bodyForm">
-          <div class="row q-mb-md">
-            <q-input v-model="addFormFields.name" type="text" float-label="Наименование заказчика" />
-          </div>
-          <div class="row q-mb-md">
-            <q-checkbox v-model="addFormFields.enabled" label="Активен" />
-          </div>
-        </template>
-      </AddForm>
-    </template>
     </BaseDirTable>
+    <q-dialog
+      v-model="showDialog"
+      prevent-close
+      ok="OK"
+      cancel="Cancel"
+      @ok="onOk"
+      @show="onShow"
+    >
+      <span slot="title">Добавление нового заказчика</span>
+      <div slot="body">
+        <div class="row q-mb-md">
+          <q-input v-model="addFormFields.name" type="text" float-label="Наименование заказчика" ref="ff" />
+        </div>
+        <div class="row q-mb-md">
+          <q-checkbox v-model="addFormFields.enabled" label="Активен" />
+        </div>
+      </div>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -31,12 +37,12 @@ import {
 } from 'vuex';
 
 import BaseDirTable from '../auxiliary/BaseTable.vue';
-import AddForm from '../auxiliary/AddForm.vue';
+// import AddForm from '../auxiliary/AddForm.vue';
 
 export default {
   components: {
-    BaseDirTable,
-    AddForm
+    BaseDirTable
+    // AddForm
   },
   data: () => ({
     title: 'Список заказчиков',
@@ -85,8 +91,8 @@ export default {
     addFormFields: {
       name: null,
       enabled: true
-    }
-
+    },
+    showDialog: false
   }),
 
   computed: {
@@ -105,10 +111,39 @@ export default {
     }),
     ...mapActions({
       getCustomers: 'ds/getCustomers',
+      addCustomer: 'ds/addCustomer',
       deleteCustomer: 'ds/deleteCustomer',
       updateCustomer: 'ds/updateCustomer'
     }),
 
+    onShow() {
+      this.$nextTick(() => this.$refs.ff.select());
+    },
+    AddDocument() {
+      this.showDialog = true;
+    },
+    async onOk() {
+      const res = this.addCustomer(this.addFormFields);
+      res.then((response) => {
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: `Документ '${response.data.name}' успешно создан.`,
+          icon: 'save'
+        });
+      })
+        .catch((err) => {
+          /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
+          const url = err.config.url;
+          const errMessage = this.getErrorMessage('post', url, err);
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: errMessage,
+            icon: 'report_problem'
+          });
+        });
+    },
     // удалить документ
     DeleteDocument(id) {
       this.setLoading(true);
@@ -171,6 +206,7 @@ export default {
 
   // хук когда компонент загружен
   mounted() {
+    this.$root.$on('addDocument', this.AddDocument);
     this.$root.$on('deleteDocument', this.DeleteDocument);
     this.$root.$on('updateDocument', this.UpdateDocument);
 
