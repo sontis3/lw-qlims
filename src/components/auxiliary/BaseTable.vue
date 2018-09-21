@@ -126,7 +126,7 @@ export default {
     // }
   },
   // в виде функции т.к. this в стрелочной ф-ции указывает на родительский контекст, т.е. на модуль.
-  // visibleColumnsStore необходим, чтобы компонент не перезаписывал свойство visibleColumns, а работал с visibleColumnsModel
+  // visibleColumnsStore необходим, чтобы компонент не перезаписывал свойство visibleColumns
   data() {
     return {
       filter: '',
