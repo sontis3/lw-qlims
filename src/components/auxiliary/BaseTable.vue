@@ -4,7 +4,7 @@
       :title="title"
       :data="ds1"
       :columns="columns"
-      :visible-columns="visibleColumnsModel"
+      :visible-columns="visibleColumnsStore"
       :filter="filter"
       :loading="isLoading"
       row-key="name"
@@ -26,7 +26,7 @@
         <q-table-columns
           color="secondary"
           class="q-mr-sm"
-          v-model="visibleColumnsModel"
+          v-model="visibleColumnsStore"
           :columns="columns"
         />
         <q-btn
@@ -93,11 +93,6 @@ export default {
       get() { return this.ds; }
       // ,
       // set(newValue) { this.changeShowAddDialog(newValue); }
-    },
-    // модель видимых колонок таблицы и элемента управления показом
-    visibleColumnsModel: {
-      get() { return this.visibleColumnsStore; },
-      set(value) { this.visibleColumnsStore = value; }
     }
   },
 
