@@ -173,9 +173,9 @@ export default {
     },
 
     // изменить документ
-    UpdateDocument(customerObj) {
+    UpdateDocument(obj) {
       this.setLoading(true);
-      const res = this.updateCustomer(customerObj);
+      const res = this.updateCustomer(obj);
       res.then((response) => {
         this.$q.notify({
           color: 'positive',
