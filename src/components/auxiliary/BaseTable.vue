@@ -4,7 +4,7 @@
       :title="title"
       :data="ds1"
       :columns="columns"
-      :visible-columns="visibleColumns"
+      :visible-columns="visibleColumnsModel"
       :filter="filter"
       :loading="isLoading"
       row-key="name"
@@ -26,7 +26,7 @@
         <q-table-columns
           color="secondary"
           class="q-mr-sm"
-          v-model="visibleColumns"
+          v-model="visibleColumnsModel"
           :columns="columns"
         />
         <q-btn
@@ -93,6 +93,11 @@ export default {
       get() { return this.ds; }
       // ,
       // set(newValue) { this.changeShowAddDialog(newValue); }
+    },
+    // модель видимых колонок таблицы и элемента управления показом
+    visibleColumnsModel: {
+      get() { return this.visibleColumnsStore; },
+      set(value) { this.visibleColumnsStore = value; }
     }
   },
 
@@ -125,15 +130,20 @@ export default {
     //   return idd;
     // }
   },
-  data: () => ({
-    filter: '',
-    popoverStyle: {
-      backgroundColor: 'red',
-      minWidth: '0px',
-      display: 'inline-flex',
-      flexWrap: 'nowrap'
-    }
-  })
+  // в виде функции т.к. this в стрелочной ф-ции указывает на родительский контекст, т.е. на модуль.
+  // visibleColumnsStore необходим, чтобы компонент не перезаписывал свойство visibleColumns, а работал с visibleColumnsModel
+  data() {
+    return {
+      filter: '',
+      visibleColumnsStore: this.visibleColumns,
+      popoverStyle: {
+        backgroundColor: 'red',
+        minWidth: '0px',
+        display: 'inline-flex',
+        flexWrap: 'nowrap'
+      }
+    };
+  }
 };
 </script>
 
