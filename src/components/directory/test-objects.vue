@@ -48,7 +48,7 @@ export default {
       {
         name: 'desc',
         required: true,
-        label: 'Наименование тестируемого объекта',
+        label: 'Наименование',
         align: 'left',
         field: 'name',
         sortable: true,
@@ -85,7 +85,7 @@ export default {
         required: true
       }
     ],
-    visibleColumns: ['desc', 'enabled', 'dateCreated', 'dateUpdated', 'row-actions'],
+    visibleColumns: ['desc', 'enabled', 'row-actions'],
     addFormFields: {
       name: null,
       enabled: true
