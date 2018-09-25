@@ -105,6 +105,15 @@ export default {
     })
   },
 
+  provide() {
+    return {
+      getDocuments: this.getDocuments,
+      showAddDialog: this.showAddDialog,
+      deleteDocument: this.deleteDocument,
+      updateDocument: this.updateDocument
+    };
+  },
+
   methods: {
     ...mapMutations({
       setLoading: 'ds/setLoading'
@@ -119,7 +128,7 @@ export default {
     onShow() {
       this.$nextTick(() => this.$refs.ff.select());
     },
-    onAddDocument() {
+    showAddDialog() {
       this.showDialog = true;
     },
     async onOk() {
@@ -143,97 +152,7 @@ export default {
             icon: 'report_problem'
           });
         });
-    },
-    // удалить документ
-    onDeleteDocument(id) {
-      this.setLoading(true);
-      const res = this.deleteDocument(id);
-      res.then((response) => {
-        this.$q.notify({
-          color: 'positive',
-          position: 'top',
-          message: `Документ '${response.data.name}' успешно удален.`,
-          icon: 'delete'
-        });
-      })
-        .catch((err) => {
-          /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
-          const url = err.config.url;
-          const errMessage = this.getErrorMessage('delete', url, err);
-          this.$q.notify({
-            color: 'negative',
-            position: 'top',
-            message: errMessage,
-            icon: 'report_problem'
-          });
-        })
-        .finally(() => {
-          this.setLoading(false);
-        });
-    },
-
-    // изменить документ
-    onUpdateDocument(obj) {
-      this.setLoading(true);
-      const res = this.updateDocument(obj);
-      res.then((response) => {
-        this.$q.notify({
-          color: 'positive',
-          position: 'top',
-          message: `Документ '${response.data.name}' успешно изменен.`,
-          icon: 'update'
-        });
-      })
-        .catch((err) => {
-          /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
-          const url = err.config.url;
-          const errMessage = this.getErrorMessage('put', url, err);
-          this.$q.notify({
-            color: 'negative',
-            position: 'top',
-            message: errMessage,
-            icon: 'report_problem'
-          });
-        })
-        .finally(() => {
-          // принудительное обновление документов необходимо, т.к. чекбокс при ощибке остается в неправильном состоянии
-          this.getDocuments();
-          this.setLoading(false);
-        });
     }
-
-  },
-
-  // хук когда компонент загружен
-  mounted() {
-    this.$root.$on('addDocument', this.onAddDocument);
-    this.$root.$on('deleteDocument', this.onDeleteDocument);
-    this.$root.$on('updateDocument', this.onUpdateDocument);
-
-    this.setLoading(true);
-    const res = this.getDocuments();
-
-    res.then(() => {})
-      .catch((err) => {
-        /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
-        const url = err.config.url;
-        const errMessage = this.getErrorMessage('get', url, err);
-        this.$q.notify({
-          color: 'negative',
-          position: 'top',
-          message: errMessage,
-          icon: 'report_problem'
-        });
-      })
-      .finally(() => {
-        this.setLoading(false);
-      });
-  },
-
-  beforeDestroy() {
-    this.$root.$off('addDocument', this.onAddDocument);
-    this.$root.$off('deleteDocument', this.onDeleteDocument);
-    this.$root.$off('updateDocument', this.onUpdateDocument);
   }
 };
 </script>

@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 
 export default {
   name: 'BaseDirTable',
@@ -96,24 +96,79 @@ export default {
     }
   },
 
+  inject: ['getDocuments', 'showAddDialog', 'deleteDocument', 'updateDocument'],
+
   methods: {
     // ...mapMutations({
     //   changeShowAddDialog: 'appMode/changeShowAddDialog'
     // }),
+    ...mapMutations({
+      setLoading: 'ds/setLoading'
+    }),
 
     /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
     // удалить документ
     DeleteDocument(row) {
-      this.$root.$emit('deleteDocument', row.id);
+      const id = row.id;
+      this.setLoading(true);
+      const res = this.deleteDocument(id);
+      res.then((response) => {
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: `Документ '${response.data.name}' успешно удален.`,
+          icon: 'delete'
+        });
+      })
+        .catch((err) => {
+          /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
+          const url = err.config.url;
+          const errMessage = this.getErrorMessage('delete', url, err);
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: errMessage,
+            icon: 'report_problem'
+          });
+        })
+        .finally(() => {
+          this.setLoading(false);
+        });
     },
+
     // создать документ
     AddDocument() {
-      this.$root.$emit('addDocument');
+      this.showAddDialog();
       // this.changeShowAddDialog(true);
     },
     // изменить документ
     UpdateDocument(row, cname) {
-      this.$root.$emit('updateDocument', row, cname);
+      this.setLoading(true);
+      const res = this.updateDocument(row);
+      res.then((response) => {
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: `Документ '${response.data.name}' успешно изменен. Поле [${cname}]`,
+          icon: 'update'
+        });
+      })
+        .catch((err) => {
+          /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
+          const url = err.config.url;
+          const errMessage = this.getErrorMessage('put', url, err);
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: errMessage,
+            icon: 'report_problem'
+          });
+        })
+        .finally(() => {
+          // принудительное обновление документов необходимо, т.к. чекбокс при ощибке остается в неправильном состоянии
+          this.getDocuments();
+          this.setLoading(false);
+        });
     },
     showPopover() {
       // выставить ширину как у строки таблицы
@@ -124,6 +179,26 @@ export default {
     //   const idd = row.id;
     //   return idd;
     // }
+  },
+  mounted() {
+    this.setLoading(true);
+    const res = this.getDocuments();
+
+    res.then(() => {})
+      .catch((err) => {
+        /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
+        const url = err.config.url;
+        const errMessage = this.getErrorMessage('get', url, err);
+        this.$q.notify({
+          color: 'negative',
+          position: 'top',
+          message: errMessage,
+          icon: 'report_problem'
+        });
+      })
+      .finally(() => {
+        this.setLoading(false);
+      });
   },
   // в виде функции т.к. this в стрелочной ф-ции указывает на родительский контекст, т.е. на модуль.
   // visibleColumnsStore необходим, чтобы компонент не перезаписывал свойство visibleColumns
