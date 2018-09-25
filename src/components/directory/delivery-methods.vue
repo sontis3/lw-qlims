@@ -15,10 +15,10 @@
       @ok="onOk"
       @show="onShow"
     >
-      <span slot="title">Добавление нового тестируемого объекта</span>
+      <span slot="title">Добавление нового способа доставки</span>
       <div slot="body">
         <div class="row q-mb-md">
-          <q-input v-model="addFormFields.name" type="text" float-label="Наименование тестируемого объекта" ref="ff" />
+          <q-input v-model="addFormFields.name" type="text" float-label="Наименование способа доставки" ref="ff" />
         </div>
         <div class="row q-mb-md">
           <q-checkbox v-model="addFormFields.enabled" label="Активен" />
@@ -43,7 +43,7 @@ export default {
     BaseDirTable
   },
   data: () => ({
-    title: 'Тестируемые объекты',
+    title: 'Способы доставки',
     columns: [
       {
         name: 'desc',
@@ -96,7 +96,7 @@ export default {
   computed: {
     ...mapState({
       // источник данных
-      ds: state => state.ds.dsTestObjects
+      ds: state => state.ds.dsDeliveryMethods
     }),
     ...mapGetters({
       getErrorMessage: 'appMode/getErrorMessage'
@@ -108,10 +108,10 @@ export default {
       setLoading: 'ds/setLoading'
     }),
     ...mapActions({
-      getDocuments: 'ds/getTestObjects',
-      addDocument: 'ds/addTestObject',
-      deleteDocument: 'ds/deleteTestObject',
-      updateDocument: 'ds/updateTestObject'
+      getDocuments: 'ds/getDeliveryMethods',
+      addDocument: 'ds/addDeliveryMethod',
+      deleteDocument: 'ds/deleteDeliveryMethod',
+      updateDocument: 'ds/updateDeliveryMethod'
     }),
 
     onShow() {

@@ -110,20 +110,20 @@ export default {
       setLoading: 'ds/setLoading'
     }),
     ...mapActions({
-      getCustomers: 'ds/getCustomers',
-      addCustomer: 'ds/addCustomer',
-      deleteCustomer: 'ds/deleteCustomer',
-      updateCustomer: 'ds/updateCustomer'
+      getDocuments: 'ds/getCustomers',
+      addDocument: 'ds/addCustomer',
+      deleteDocument: 'ds/deleteCustomer',
+      updateDocument: 'ds/updateCustomer'
     }),
 
     onShow() {
       this.$nextTick(() => this.$refs.ff.select());
     },
-    AddDocument() {
+    onAddDocument() {
       this.showDialog = true;
     },
     async onOk() {
-      const res = this.addCustomer(this.addFormFields);
+      const res = this.addDocument(this.addFormFields);
       res.then((response) => {
         this.$q.notify({
           color: 'positive',
@@ -145,9 +145,9 @@ export default {
         });
     },
     // удалить документ
-    DeleteDocument(id) {
+    onDeleteDocument(id) {
       this.setLoading(true);
-      const res = this.deleteCustomer(id);
+      const res = this.deleteDocument(id);
       res.then((response) => {
         this.$q.notify({
           color: 'positive',
@@ -173,9 +173,9 @@ export default {
     },
 
     // изменить документ
-    UpdateDocument(obj) {
+    onUpdateDocument(obj) {
       this.setLoading(true);
-      const res = this.updateCustomer(obj);
+      const res = this.updateDocument(obj);
       res.then((response) => {
         this.$q.notify({
           color: 'positive',
@@ -197,7 +197,7 @@ export default {
         })
         .finally(() => {
           // принудительное обновление документов необходимо, т.к. чекбокс при ощибке остается в неправильном состоянии
-          this.getCustomers();
+          this.getDocuments();
           this.setLoading(false);
         });
     }
@@ -206,12 +206,12 @@ export default {
 
   // хук когда компонент загружен
   mounted() {
-    this.$root.$on('addDocument', this.AddDocument);
-    this.$root.$on('deleteDocument', this.DeleteDocument);
-    this.$root.$on('updateDocument', this.UpdateDocument);
+    this.$root.$on('addDocument', this.onAddDocument);
+    this.$root.$on('deleteDocument', this.onDeleteDocument);
+    this.$root.$on('updateDocument', this.onUpdateDocument);
 
     this.setLoading(true);
-    const res = this.getCustomers();
+    const res = this.getDocuments();
 
     res.then(() => {})
       .catch((err) => {
@@ -228,6 +228,12 @@ export default {
       .finally(() => {
         this.setLoading(false);
       });
+  },
+
+  beforeDestroy() {
+    this.$root.$off('addDocument', this.onAddDocument);
+    this.$root.$off('deleteDocument', this.onDeleteDocument);
+    this.$root.$off('updateDocument', this.onUpdateDocument);
   }
 };
 </script>

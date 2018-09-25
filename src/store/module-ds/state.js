@@ -4,10 +4,12 @@ export default {
   dirPartUrl: 'dir',
   customersPartUrl: 'customers',
   testObjectsPartUrl: 'test-objects',
+  deliveryMethodsPartUrl: 'delivery-methods',
 
   // источники данных
   dsCustomers: [],
   dsTestObjects: [],
+  dsDeliveryMethods: [],
 
   // индикатор загрузки данных
   isLoading: false

@@ -10,7 +10,7 @@ export default {
       actions: [
         { id: 'Customers', name: 'Заказчики' },
         { id: 'TestObjects', name: 'Тестируемые объекты' },
-        { id: 'DeliveryKinds', name: 'Способы доставки' },
+        { id: 'DeliveryMethods', name: 'Способы доставки' },
         { id: 'Couriers', name: 'Курьеры' },
         { id: 'Samples', name: 'Образцы' }
       ]

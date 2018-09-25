@@ -8,9 +8,12 @@ export const setDsTestObjects = (state, newDs) => {
   state.dsTestObjects = newDs;
 };
 
+// установить новый источник данных Способы доставки
+export const setDsDeliveryMethods = (state, newDs) => {
+  state.dsDeliveryMethods = newDs;
+};
+
 // установить значение индикатора загрузки
 export const setLoading = (state, newValue) => {
   state.isLoading = newValue;
 };
-
-export { setDsCustomers as default };
