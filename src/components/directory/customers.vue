@@ -126,7 +126,7 @@ export default {
     }),
 
     onShow() {
-      this.$nextTick(() => this.$refs.ff.select());
+      this.$refs.ff.select();
     },
     showAddDialog() {
       this.showDialog = true;

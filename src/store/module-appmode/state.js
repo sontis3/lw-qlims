@@ -16,10 +16,10 @@ export default {
       ]
     },
     {
-      modeId: 'Two',
-      currentAction: 'Customers2',
+      modeId: 'Registers',
+      currentAction: 'SamplesRegister',
       actions: [
-        { id: 'Customers2', name: 'Заказчики2' },
+        { id: 'SamplesRegister', name: 'Реестр образцов' },
         { id: 'TestObjects2', name: 'Тестируемые объекты2' },
         { id: 'DeliveryKinds2', name: 'Способы доставки2' },
         { id: 'Couriers2', name: 'Курьеры2' },
