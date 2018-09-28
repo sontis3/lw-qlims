@@ -22,7 +22,7 @@
 
         <q-btn-group>
           <q-btn @click="onChangeMode({id: 'Directory', name: 'Системные справочники'})" label="Справочники" :class="{checked: currentMode.id === 'Directory'}"></q-btn>
-          <q-btn @click="onChangeMode({id: 'Registers', name: 'Реестры'})" label="Реестры" :class="{checked: currentMode.id == 'Registers'}"></q-btn>
+          <q-btn @click="onChangeMode({id: 'Catalogs', name: 'Реестры'})" label="Реестры" :class="{checked: currentMode.id == 'StandardSamples'}"></q-btn>
           <!-- <q-btn @click="onChangeMode({id: 'Three', name: 'Заглушка 3'})" label="Three" :class="{checked: currentMode.id == 'Three'}"></q-btn> -->
         </q-btn-group>
       </q-toolbar>
@@ -108,6 +108,7 @@ export default {
       console.log(newMode);
       // debugger;
       this.changeMode(newMode);
+      this.$router.push({ name: this.currentAction });
     },
     // по нажатию на пункт акции в drawer
     onChangeAction(newAction) {
@@ -115,6 +116,9 @@ export default {
       // debugger;
       this.changeAction(newAction);
     }
+  },
+  mounted() {
+    this.$router.push({ name: this.currentAction });
   }
 };
 </script>

@@ -16,11 +16,11 @@ export default {
       ]
     },
     {
-      modeId: 'Registers',
-      currentAction: 'SamplesRegister',
+      modeId: 'Catalogs',
+      currentAction: 'StandardSamples',
       actions: [
-        { id: 'SamplesRegister', name: 'Реестр образцов' },
-        { id: 'TestObjects2', name: 'Тестируемые объекты2' },
+        { id: 'Studies', name: 'Реестр исследований' },
+        { id: 'StandardSamples', name: 'Реестр стандартных образцов' },
         { id: 'DeliveryKinds2', name: 'Способы доставки2' },
         { id: 'Couriers2', name: 'Курьеры2' },
         { id: 'Samples2', name: 'Образцы2' }

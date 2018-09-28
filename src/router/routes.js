@@ -9,7 +9,10 @@ export default [
       { path: 'directory/test-objects', name: 'TestObjects', component: () => import('components/directory/test-objects') },
       { path: 'directory/delivery-methods', name: 'DeliveryMethods', component: () => import('components/directory/delivery-methods') },
       { path: 'directory/couriers', name: 'Couriers', redirect: '' },
-      { path: 'directory/samples', name: 'Samples', redirect: '' }
+      { path: 'directory/samples', name: 'Samples', redirect: '' },
+
+      { path: 'catalogs/studies', name: 'Studies', component: () => import('components/catalogs/studies') },
+      { path: 'catalogs/standard-samples', name: 'StandardSamples', component: () => import('components/catalogs/standard-samples') }
     ]
   },
 
