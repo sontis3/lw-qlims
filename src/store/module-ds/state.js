@@ -11,6 +11,9 @@ export default {
   dsTestObjects: [],
   dsDeliveryMethods: [],
 
+  // годы
+  dsYears: ['2016', '2017', '2018', '2019'],
+
   // индикатор загрузки данных
   isLoading: false
 };

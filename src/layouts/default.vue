@@ -22,7 +22,7 @@
 
         <q-btn-group>
           <q-btn @click="onChangeMode({id: 'Directory', name: 'Системные справочники'})" label="Справочники" :class="{checked: currentMode.id === 'Directory'}"></q-btn>
-          <q-btn @click="onChangeMode({id: 'Catalogs', name: 'Реестры'})" label="Реестры" :class="{checked: currentMode.id == 'StandardSamples'}"></q-btn>
+          <q-btn @click="onChangeMode({id: 'Catalogs', name: 'Реестры'})" label="Реестры" :class="{checked: currentMode.id == 'MasterSchedules'}"></q-btn>
           <!-- <q-btn @click="onChangeMode({id: 'Three', name: 'Заглушка 3'})" label="Three" :class="{checked: currentMode.id == 'Three'}"></q-btn> -->
         </q-btn-group>
       </q-toolbar>
