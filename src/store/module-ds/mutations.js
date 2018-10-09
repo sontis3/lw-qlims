@@ -13,6 +13,11 @@ export const setDsDeliveryMethods = (state, newDs) => {
   state.dsDeliveryMethods = newDs;
 };
 
+// установить новый источник данных План-график исследований
+export const setDsMasterSchedules = (state, newDs) => {
+  state.dsMasterSchedules = newDs;
+};
+
 // установить значение индикатора загрузки
 export const setLoading = (state, newValue) => {
   state.isLoading = newValue;

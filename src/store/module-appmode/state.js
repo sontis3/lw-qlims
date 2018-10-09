@@ -21,9 +21,7 @@ export default {
       actions: [
         { id: 'MasterSchedules', name: 'План-график исследований' },
         { id: 'Studies', name: 'Реестр исследований' },
-        { id: 'StandardSamples', name: 'Реестр стандартных образцов' },
-        { id: 'Couriers2', name: 'Курьеры2' },
-        { id: 'Samples2', name: 'Образцы2' }
+        { id: 'StandardSamples', name: 'Реестр стандартных образцов' }
       ]
     }
   ],
