@@ -142,9 +142,7 @@ export default {
         });
       })
         .catch((err) => {
-          /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
-          const url = err.config.url;
-          const errMessage = this.getErrorMessage('post', url, err);
+          const errMessage = this.getErrorMessage('post', err);
           this.$q.notify({
             color: 'negative',
             position: 'top',

@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'BaseDirTable',
@@ -86,6 +86,9 @@ export default {
   computed: {
     ...mapState({
       isLoading: state => state.ds.isLoading
+    }),
+    ...mapGetters({
+      getErrorMessage: 'appMode/getErrorMessage'
     }),
 
     // источник данных для таблицы
@@ -109,7 +112,7 @@ export default {
     /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
     // удалить документ
     DeleteDocument(row) {
-      const id = row.id;
+      const { id } = row;
       this.setLoading(true);
       const res = this.deleteDocument(id);
       res.then((response) => {
@@ -121,9 +124,7 @@ export default {
         });
       })
         .catch((err) => {
-          /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
-          const url = err.config.url;
-          const errMessage = this.getErrorMessage('delete', url, err);
+          const errMessage = this.getErrorMessage('delete', err);
           this.$q.notify({
             color: 'negative',
             position: 'top',
@@ -154,9 +155,7 @@ export default {
         });
       })
         .catch((err) => {
-          /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
-          const url = err.config.url;
-          const errMessage = this.getErrorMessage('put', url, err);
+          const errMessage = this.getErrorMessage('put', err);
           this.$q.notify({
             color: 'negative',
             position: 'top',
@@ -186,9 +185,7 @@ export default {
 
     res.then(() => {})
       .catch((err) => {
-        /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
-        const url = err.config.url;
-        const errMessage = this.getErrorMessage('get', url, err);
+        const errMessage = this.getErrorMessage('get', err);
         this.$q.notify({
           color: 'negative',
           position: 'top',
