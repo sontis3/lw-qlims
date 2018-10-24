@@ -10,10 +10,10 @@ export const getStudies = async ({ commit, getters }, yearFilter) => {
 
 // добавить документ
 export const addStudy = async ({ getters, dispatch }, obj) => {
-  const url = getters.customersUrl;
+  const url = getters.studiesUrl;
 
   const response = await axios.post(url, obj);
-  await dispatch('getCustomers');
+  await dispatch('getStudies');
   // commit('setLoading', false);
   return response;
 };

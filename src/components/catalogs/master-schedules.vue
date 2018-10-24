@@ -22,7 +22,7 @@
             <q-btn
               flat round dense
               icon="add_box"
-              @click="AddDocument"
+              @click="AddDocument(item)"
             />
           </template>
         </q-table>
@@ -37,7 +37,7 @@
       @ok="onOk"
       @show="onShow"
     >
-      <span slot="title">Добавление нового план-графика</span>
+      <span slot="title">Добавление нового исследования в {{addFormFields.planYear}} год</span>
       <div slot="body">
         <div class="row q-mb-md">
           <q-input v-model="addFormFields.studyNo" type="text" float-label="Код исследования" ref="ff" />
@@ -105,6 +105,7 @@ export default {
     ],
     visibleColumns: ['studyNo', 'testItem', 'customer'],
     addFormFields: {
+      planYear: 2018,
       studyNo: null,
       enabled: true
     },
@@ -134,8 +135,9 @@ export default {
     }),
 
     // создать документ
-    AddDocument() {
+    AddDocument(planYear) {
       this.showDialog = true;
+      this.addFormFields.planYear = planYear;
     },
 
     // показ план графика за год
@@ -165,6 +167,7 @@ export default {
 
     // показ формы добавления документа
     onShow() {
+      // установка выделенного поля
       this.$refs.ff.select();
     },
 
