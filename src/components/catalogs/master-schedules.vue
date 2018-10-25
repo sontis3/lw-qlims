@@ -43,6 +43,9 @@
           <q-input v-model="addFormFields.studyNo" type="text" float-label="Код исследования" ref="ff" />
         </div>
         <div class="row q-mb-md">
+          <q-select v-model="addFormFields.studyNo" :options="selectCustomerOptions" float-label="Заказчик"/>
+        </div>
+        <div class="row q-mb-md">
           <q-checkbox v-model="addFormFields.enabled" label="Активен" />
         </div>
       </div>
@@ -105,16 +108,20 @@ export default {
     ],
     visibleColumns: ['studyNo', 'testItem', 'customer'],
     addFormFields: {
-      planYear: 2018,
       studyNo: null,
+      planYear: 2018,
+      customerId: 'null',
+      test_objectId: 'null',
       enabled: true
     },
-    showDialog: false
+    showDialog: false,
+    selectCustomerOptions: []
   }),
 
   computed: {
     ...mapState({
       dsYears: state => state.ds.dsYears,
+      dsCustomers: state => state.ds.dsCustomers,
       // источник данных
       ds: state => state.ds.dsMasterSchedules
     }),
@@ -131,7 +138,9 @@ export default {
       getDocuments: 'ds/getStudies',
       addDocument: 'ds/addStudy',
       deleteDocument: 'ds/deleteStudy',
-      updateDocument: 'ds/updateStudy'
+      updateDocument: 'ds/updateStudy',
+
+      getCustomers: 'ds/getCustomers'
     }),
 
     // создать документ
@@ -171,6 +180,7 @@ export default {
       this.$refs.ff.select();
     },
 
+    // добавление документа
     async onOk() {
       const res = this.addDocument(this.addFormFields);
       res.then((response) => {
@@ -191,6 +201,25 @@ export default {
           });
         });
     }
+  },
+
+  mounted() {
+    this.setLoading(true);
+    const res = this.getCustomers();
+
+    res.then(() => {})
+      .catch((err) => {
+        const errMessage = this.getErrorMessage('get', err);
+        this.$q.notify({
+          color: 'negative',
+          position: 'top',
+          message: errMessage,
+          icon: 'report_problem'
+        });
+      })
+      .finally(() => {
+        this.setLoading(false);
+      });
   }
 };
 </script>

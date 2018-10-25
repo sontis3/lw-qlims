@@ -13,7 +13,7 @@ export const addStudy = async ({ getters, dispatch }, obj) => {
   const url = getters.studiesUrl;
 
   const response = await axios.post(url, obj);
-  await dispatch('getStudies');
+  await dispatch('getStudies', obj.planYear);
   // commit('setLoading', false);
   return response;
 };

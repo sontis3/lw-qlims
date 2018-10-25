@@ -67,6 +67,7 @@ module.exports = function (ctx) {
         'QPopover',
         'QPopupEdit',
         'QSearch',
+        'QSelect',
         'QTable',
         'QTableColumns',
         'QTr',
