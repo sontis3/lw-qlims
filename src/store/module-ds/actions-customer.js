@@ -43,3 +43,13 @@ export const updateCustomer = async ({ getters, dispatch }, obj) => {
   // commit('setLoading', false);
   return response;
 };
+
+// добавочные специализированные акции
+// получить источник данных (имя, ид объекта)
+export const getShortEnabledCustomers = async ({ commit, getters }) => {
+  const rawResponse = await axios.get(getters.customersUrl, { params: { enabled: true, short: true } });
+  const response = rawResponse.data.map(item => ({ label: item.name, value: item.id }));
+  commit('setDsShortCustomers', response);
+  // commit('setLoading', false);
+  return response;
+};

@@ -3,6 +3,10 @@ export const setDsCustomers = (state, newDs) => {
   state.dsCustomers = newDs;
 };
 
+export const setDsShortCustomers = (state, newDs) => {
+  state.dsShortCustomers = newDs;
+};
+
 // установить новый источник данных Тестируемые объекты
 export const setDsTestObjects = (state, newDs) => {
   state.dsTestObjects = newDs;

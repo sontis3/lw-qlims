@@ -11,6 +11,7 @@ export default {
   /* eslint no-multi-spaces: ["error", { ignoreEOLComments: true }] */
   // источники данных
   dsCustomers: [],        // Заказчики
+  dsShortCustomers: [],   // Заказчики для QSelect
   dsTestObjects: [],      // Тестируемые объекты
   dsDeliveryMethods: [],  // Методы доставки
   dsMasterSchedules: [],  // План-график исследований

@@ -43,7 +43,7 @@
           <q-input v-model="addFormFields.studyNo" type="text" float-label="Код исследования" ref="ff" />
         </div>
         <div class="row q-mb-md">
-          <q-select v-model="addFormFields.studyNo" :options="selectCustomerOptions" float-label="Заказчик"/>
+          <q-select v-model="addFormFields.customerId" :options="dsShortCustomers" float-label="Заказчик"/>
         </div>
         <div class="row q-mb-md">
           <q-checkbox v-model="addFormFields.enabled" label="Активен" />
@@ -114,14 +114,13 @@ export default {
       test_objectId: 'null',
       enabled: true
     },
-    showDialog: false,
-    selectCustomerOptions: []
+    showDialog: false
   }),
 
   computed: {
     ...mapState({
       dsYears: state => state.ds.dsYears,
-      dsCustomers: state => state.ds.dsCustomers,
+      dsShortCustomers: state => state.ds.dsShortCustomers,
       // источник данных
       ds: state => state.ds.dsMasterSchedules
     }),
@@ -140,7 +139,7 @@ export default {
       deleteDocument: 'ds/deleteStudy',
       updateDocument: 'ds/updateStudy',
 
-      getCustomers: 'ds/getCustomers'
+      getShortEnabledCustomers: 'ds/getShortEnabledCustomers'
     }),
 
     // создать документ
@@ -167,11 +166,6 @@ export default {
         .finally(() => {
           this.setLoading(false);
         });
-
-
-      if (year === 1964) {
-        this.showDialog = true;
-      }
     },
 
     // показ формы добавления документа
@@ -205,7 +199,7 @@ export default {
 
   mounted() {
     this.setLoading(true);
-    const res = this.getCustomers();
+    const res = this.getShortEnabledCustomers();
 
     res.then(() => {})
       .catch((err) => {
