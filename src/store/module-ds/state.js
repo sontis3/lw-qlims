@@ -13,6 +13,7 @@ export default {
   dsCustomers: [],        // Заказчики
   dsShortCustomers: [],   // Заказчики для QSelect
   dsTestObjects: [],      // Тестируемые объекты
+  dsShortTestObjects: [], // Тестируемые объекты для QSelect
   dsDeliveryMethods: [],  // Методы доставки
   dsMasterSchedules: [],  // План-график исследований
 

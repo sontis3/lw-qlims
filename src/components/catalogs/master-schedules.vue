@@ -30,6 +30,7 @@
     </q-list>
     <!-- диалог добавления документа -->
     <q-dialog
+      id="add-document-dialog"
       v-model="showDialog"
       prevent-close
       ok="OK"
@@ -44,6 +45,9 @@
         </div>
         <div class="row q-mb-md">
           <q-select v-model="addFormFields.customerId" :options="dsShortCustomers" float-label="Заказчик"/>
+        </div>
+        <div class="row q-mb-md">
+          <q-select v-model="addFormFields.test_objectId" :options="dsShortTestObjects" float-label="Тестируемый объект"/>
         </div>
         <div class="row q-mb-md">
           <q-checkbox v-model="addFormFields.enabled" label="Активен" />
@@ -121,6 +125,7 @@ export default {
     ...mapState({
       dsYears: state => state.ds.dsYears,
       dsShortCustomers: state => state.ds.dsShortCustomers,
+      dsShortTestObjects: state => state.ds.dsShortTestObjects,
       // источник данных
       ds: state => state.ds.dsMasterSchedules
     }),
@@ -139,7 +144,8 @@ export default {
       deleteDocument: 'ds/deleteStudy',
       updateDocument: 'ds/updateStudy',
 
-      getShortEnabledCustomers: 'ds/getShortEnabledCustomers'
+      getShortEnabledCustomers: 'ds/getShortEnabledCustomers',
+      getShortEnabledTestObjects: 'ds/getShortEnabledTestObjects'
     }),
 
     // создать документ
@@ -199,8 +205,23 @@ export default {
 
   mounted() {
     this.setLoading(true);
-    const res = this.getShortEnabledCustomers();
+    let res = this.getShortEnabledCustomers();
+    res.then(() => {})
+      .catch((err) => {
+        const errMessage = this.getErrorMessage('get', err);
+        this.$q.notify({
+          color: 'negative',
+          position: 'top',
+          message: errMessage,
+          icon: 'report_problem'
+        });
+      })
+      .finally(() => {
+        this.setLoading(false);
+      });
 
+    this.setLoading(true);
+    res = this.getShortEnabledTestObjects();
     res.then(() => {})
       .catch((err) => {
         const errMessage = this.getErrorMessage('get', err);
@@ -219,4 +240,8 @@ export default {
 </script>
 
 <style>
+/* снимает ограничение высоты диалога, чтобы не было скрола */
+#add-document-dialog .modal-body {
+  max-height: initial;
+}
 </style>

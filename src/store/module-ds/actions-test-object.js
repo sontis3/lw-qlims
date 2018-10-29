@@ -43,3 +43,13 @@ export const updateTestObject = async ({ getters, dispatch }, obj) => {
   // commit('setLoading', false);
   return response;
 };
+
+// добавочные специализированные акции
+// получить источник данных (имя, ид объекта)
+export const getShortEnabledTestObjects = async ({ commit, getters }) => {
+  const rawResponse = await axios.get(getters.testObjectsUrl, { params: { enabled: true, short: true } });
+  const response = rawResponse.data.map(item => ({ label: item.name, value: item.id }));
+  commit('setDsShortTestObjects', response);
+  // commit('setLoading', false);
+  return response;
+};

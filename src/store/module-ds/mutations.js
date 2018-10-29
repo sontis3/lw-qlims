@@ -12,6 +12,10 @@ export const setDsTestObjects = (state, newDs) => {
   state.dsTestObjects = newDs;
 };
 
+export const setDsShortTestObjects = (state, newDs) => {
+  state.dsShortTestObjects = newDs;
+};
+
 // установить новый источник данных Способы доставки
 export const setDsDeliveryMethods = (state, newDs) => {
   state.dsDeliveryMethods = newDs;
