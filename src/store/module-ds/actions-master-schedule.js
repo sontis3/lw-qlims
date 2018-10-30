@@ -3,7 +3,7 @@ import axios from 'axios';
 // получить полный источник данных
 export const getStudies = async ({ commit, getters }, yearFilter) => {
   const response = await axios.get(getters.studiesUrl, { params: { year: yearFilter } });
-  commit('setDsMasterSchedules', response.data);
+  commit('setDsMasterSchedules', { data: response.data, year: yearFilter });
   // commit('setLoading', false);
   return response;
 };

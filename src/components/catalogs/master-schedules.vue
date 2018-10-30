@@ -73,7 +73,7 @@ export default {
         required: true,
         label: 'Код исследования',
         align: 'left',
-        field: 'name',
+        field: 'studyNo',
         sortable: true,
         classes: 'popup-edit'
       },

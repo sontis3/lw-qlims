@@ -22,8 +22,8 @@ export const setDsDeliveryMethods = (state, newDs) => {
 };
 
 // установить новый источник данных План-график исследований
-export const setDsMasterSchedules = (state, newDs) => {
-  state.dsMasterSchedules = newDs;
+export const setDsMasterSchedules = (state, payload) => {
+  state.dsMasterSchedules[payload.year] = payload.data;
 };
 
 // установить значение индикатора загрузки
