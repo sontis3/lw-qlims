@@ -114,8 +114,8 @@ export default {
     addFormFields: {
       studyNo: null,
       planYear: 2018,
-      customerId: 'null',
-      test_objectId: 'null',
+      customerId: null,
+      test_objectId: null,
       enabled: true
     },
     showDialog: false
