@@ -1,3 +1,7 @@
+function range(start, end) {
+  return Array(end - start + 1).fill().map((_, idx) => (start + idx).toString());
+}
+
 export default {
   // адреса web API
   apiUrl: 'http://localhost:3000/api',
@@ -18,7 +22,7 @@ export default {
   dsMasterSchedules: {},  // План-график исследований (именем свойства является номер года)
 
   // годы
-  dsYears: ['2016', '2017', '2018', '2019'],
+  dsYears: range(2016, (new Date()).getFullYear() + 1),
 
   // индикатор загрузки данных
   isLoading: false
