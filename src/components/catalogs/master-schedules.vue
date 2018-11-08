@@ -12,6 +12,7 @@
         <!-- таблица планов исследований -->
         <q-table
           :columns="columns"
+          :visible-columns="visibleColumns"
           row-key="name"
           :data="ds[item]"
           dense
@@ -82,11 +83,11 @@ export default {
         classes: 'popup-edit'
       },
       {
-        name: 'testItem',
+        name: 'testObject',
         required: true,
         label: 'Тестируемый объект',
         align: 'left',
-        field: 'name',
+        field: row => ((row || {}).test_object || {}).name, // защита от ошибки, если customer=undefined
         sortable: true,
         classes: 'popup-edit'
       },
@@ -95,7 +96,7 @@ export default {
         required: true,
         label: 'Заказчик',
         align: 'left',
-        field: 'name',
+        field: row => ((row || {}).customer || {}).name, // защита от ошибки, если customer=undefined
         sortable: true,
         classes: 'popup-edit'
       },
@@ -114,7 +115,7 @@ export default {
         sortable: true
       }
     ],
-    visibleColumns: ['studyNo', 'testItem', 'customer'],
+    visibleColumns: ['studyNo', 'testObject', 'customer', 'dateCreated', 'dateUpdated'],
     addFormFields: {
       studyNo: null,
       planYear: 2018,
