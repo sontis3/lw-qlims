@@ -71,7 +71,13 @@
     </q-page-container>
 
     <q-layout-footer>
-      <div>Running on Quasar v {{ $q.version }}</div>
+      <div class="row">
+        <div class="col-11">Running on Quasar v {{ $q.version }}</div>
+        <!-- уведомление об ошибках -->
+        <div class="col-auto">
+          <q-btn icon="cancel" dense size="sm">12</q-btn>
+        </div>
+      </div>
     </q-layout-footer>
 
   </q-layout>
@@ -128,12 +134,12 @@ export default {
   background-color: rgb(128, 128, 128);
 }
 
-.q-toolbar>.q-btn-group>button {
+.q-toolbar > .q-btn-group > button {
   opacity: 0.6;
   font-weight: bold;
 }
 
-.q-toolbar>.q-btn-group>button.checked {
+.q-toolbar > .q-btn-group > button.checked {
   opacity: 1;
 }
 
@@ -145,5 +151,4 @@ export default {
 .q-item.checked {
   opacity: 1;
 }
-
 </style>

@@ -39,13 +39,14 @@
       <q-tr slot="body" slot-scope="props" :props="props">
         <q-td v-for="col in props.cols" v-if="col.name !== 'rowActions'" :key="col.name" :props="props">
           <template v-if="col.classes === 'as-checkbox'" :props="props">
-            <q-checkbox v-model="props.row[col.name]" @input="UpdateDocument(props.row, col.name)"/>
+            <q-checkbox v-model="props.row[col.field]" @input="UpdateDocument(props.row, col.label)"/>
           </template>
           <template v-else-if="col.classes === 'popup-edit'">
             {{ col.value }}
-            <q-popup-edit v-model="props.row.name" @save="UpdateDocument(props.row, col.name)">
+            <!-- <q-popup-edit v-model="props.row[col.field]" @save="UpdateDocument(props.row, col.label)"> -->
+            <q-popup-edit :value="props.row[col.field]" @save="(val, initialValue) => UpdateDocument(val, initialValue, props.row, col.label)">
               <q-field count>
-                <q-input v-model="props.row.name" />
+                <q-input v-model="props.row[col.field]" />
               </q-field>
             </q-popup-edit>
           </template>
@@ -143,14 +144,17 @@ export default {
       // this.changeShowAddDialog(true);
     },
     // изменить документ
-    UpdateDocument(row, cname) {
+    UpdateDocument(val, initialValue, row, cLabel) {
       this.setLoading(true);
+      // для видимости в catch
+      const initVal = initialValue;
+      const updatedRow = row;
       const res = this.updateDocument(row);
       res.then((response) => {
         this.$q.notify({
           color: 'positive',
           position: 'top',
-          message: `Документ '${response.data.name}' успешно изменен. Поле [${cname}]`,
+          message: `Документ '${response.data.name}' успешно изменен. Поле [${cLabel}]`,
           icon: 'update'
         });
       })
@@ -162,6 +166,7 @@ export default {
             message: errMessage,
             icon: 'report_problem'
           });
+          updatedRow.name = initVal;
         })
         .finally(() => {
           // принудительное обновление документов необходимо, т.к. чекбокс при ощибке остается в неправильном состоянии

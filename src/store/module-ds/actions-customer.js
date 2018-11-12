@@ -2,9 +2,7 @@ import axios from 'axios';
 
 // получить полный источник данных
 export const getCustomers = async ({ commit, getters }) => {
-  const response = await axios.get(getters.customersUrl);
-  commit('setDsCustomers', response.data);
-  // commit('setLoading', false);
+  const response = await axios.get(getters.customersUrl).then((resp) => { commit('setDsCustomers', resp.data); return resp; });
   return response;
 };
 
@@ -14,7 +12,6 @@ export const addCustomer = async ({ getters, dispatch }, obj) => {
 
   const response = await axios.post(url, obj);
   await dispatch('getCustomers');
-  // commit('setLoading', false);
   return response;
 };
 
@@ -24,12 +21,11 @@ export const deleteCustomer = async ({ getters, dispatch }, id) => {
 
   const response = await axios.delete(url);
   await dispatch('getCustomers');
-  // commit('setLoading', false);
   return response;
 };
 
 // изменить документ
-export const updateCustomer = async ({ getters, dispatch }, obj) => {
+export const updateCustomer = async ({ getters }, obj) => {
   const url = `${getters.customersUrl}/${obj.id}`;
 
   const putData = {
@@ -39,17 +35,17 @@ export const updateCustomer = async ({ getters, dispatch }, obj) => {
 
   const header = { 'Content-type': 'application/json' };
   const response = await axios.put(url, putData, { headers: header });
-  await dispatch('getCustomers');
-  // commit('setLoading', false);
   return response;
 };
 
 // добавочные специализированные акции
 // получить источник данных (имя, ид объекта)
 export const getShortEnabledCustomers = async ({ commit, getters }) => {
-  const rawResponse = await axios.get(getters.customersUrl, { params: { enabled: true, short: true } });
-  const response = rawResponse.data.map(item => ({ label: item.name, value: item.id }));
-  commit('setDsShortCustomers', response);
-  // commit('setLoading', false);
-  return response;
+  const resp = await axios.get(getters.customersUrl, { params: { enabled: true, short: true } })
+    .then((rawResponse) => {
+      const response = rawResponse.data.map(item => ({ label: item.name, value: item.id }));
+      commit('setDsShortCustomers', response);
+      return response;
+    });
+  return resp;
 };

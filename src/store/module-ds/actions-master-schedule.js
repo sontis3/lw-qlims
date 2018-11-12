@@ -2,9 +2,7 @@ import axios from 'axios';
 
 // получить полный источник данных
 export const getStudies = async ({ commit, getters }, yearFilter) => {
-  const response = await axios.get(getters.studiesUrl, { params: { year: yearFilter } });
-  commit('setDsMasterSchedules', { data: response.data, year: yearFilter });
-  // commit('setLoading', false);
+  const response = await axios.get(getters.studiesUrl, { params: { year: yearFilter } }).then((resp) => { commit('setDsMasterSchedules', { data: resp.data, year: yearFilter }); return resp; });
   return response;
 };
 
@@ -14,7 +12,6 @@ export const addStudy = async ({ getters, dispatch }, obj) => {
 
   const response = await axios.post(url, obj);
   await dispatch('getStudies', obj.planYear);
-  // commit('setLoading', false);
   return response;
 };
 
@@ -24,12 +21,11 @@ export const deleteStudy = async ({ getters, dispatch }, id) => {
 
   const response = await axios.delete(url);
   await dispatch('getCustomers');
-  // commit('setLoading', false);
   return response;
 };
 
 // изменить документ
-export const updateStudy = async ({ getters, dispatch }, obj) => {
+export const updateStudy = async ({ getters }, obj) => {
   const url = `${getters.customersUrl}/${obj.id}`;
 
   const putData = {
@@ -39,7 +35,5 @@ export const updateStudy = async ({ getters, dispatch }, obj) => {
 
   const header = { 'Content-type': 'application/json' };
   const response = await axios.put(url, putData, { headers: header });
-  await dispatch('getCustomers');
-  // commit('setLoading', false);
   return response;
 };

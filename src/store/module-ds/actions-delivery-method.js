@@ -2,9 +2,7 @@ import axios from 'axios';
 
 // получить полный источник данных
 export const getDeliveryMethods = async ({ commit, getters }) => {
-  const response = await axios.get(getters.deliveryMethodsUrl);
-  commit('setDsDeliveryMethods', response.data);
-  // commit('setLoading', false);
+  const response = await axios.get(getters.deliveryMethodsUrl).then((resp) => { commit('setDsDeliveryMethods', resp.data); return resp; });
   return response;
 };
 
@@ -14,7 +12,6 @@ export const addDeliveryMethod = async ({ getters, dispatch }, obj) => {
 
   const response = await axios.post(url, obj);
   await dispatch('getDeliveryMethods');
-  // commit('setLoading', false);
   return response;
 };
 
@@ -24,12 +21,11 @@ export const deleteDeliveryMethod = async ({ getters, dispatch }, id) => {
 
   const response = await axios.delete(url);
   await dispatch('getDeliveryMethods');
-  // commit('setLoading', false);
   return response;
 };
 
 // изменить документ
-export const updateDeliveryMethod = async ({ getters, dispatch }, obj) => {
+export const updateDeliveryMethod = async ({ getters }, obj) => {
   const url = `${getters.deliveryMethodsUrl}/${obj.id}`;
 
   const putData = {
@@ -39,7 +35,5 @@ export const updateDeliveryMethod = async ({ getters, dispatch }, obj) => {
 
   const header = { 'Content-type': 'application/json' };
   const response = await axios.put(url, putData, { headers: header });
-  await dispatch('getDeliveryMethods');
-  // commit('setLoading', false);
   return response;
 };
