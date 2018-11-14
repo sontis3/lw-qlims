@@ -75,7 +75,7 @@
         <div class="col-11">Running on Quasar v {{ $q.version }}</div>
         <!-- уведомление об ошибках -->
         <div class="col-auto">
-          <q-btn icon="cancel" dense size="sm">12</q-btn>
+          <q-btn id="error-notification-btn" icon="cancel" dense size="sm" :style="styleObject">{{errorNotifications.length}}</q-btn>
         </div>
       </div>
     </q-layout-footer>
@@ -96,13 +96,26 @@ export default {
   },
   computed: {
     ...mapState({
-      currentMode: state => state.appMode.currentMode
+      currentMode: state => state.appMode.currentMode,
+      errorNotifications: state => state.appMode.errorNotifications
     }),
     ...mapGetters({
       currentActionsList: 'appMode/currentActionsList',
       currentAction: 'appMode/currentAction'
-    })
+    }),
+    // цвет значка уведомления об ошибках
+    notifColor: {
+      get() { return (this.errorNotifications.length ? 'red' : ''); }
+    },
+    // объект для настройки стиля елемента
+    styleObject() {
+      return {
+        color: this.notifColor,
+        animation: this.errorNotifications.length ? 'blinker 2s linear infinite' : ''
+      };
+    }
   },
+
   methods: {
     ...mapMutations({
       changeMode: 'appMode/changeMode',
@@ -150,5 +163,15 @@ export default {
 
 .q-item.checked {
   opacity: 1;
+}
+
+/* #error-notification-btn {
+  animation: blinker 2s linear infinite;
+} */
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
 }
 </style>

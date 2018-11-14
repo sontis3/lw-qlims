@@ -27,5 +27,9 @@ export default {
   ],
 
   // индикатор показа диалога добавления документа
-  showAddDialog: false
+  showAddDialog: false,
+  // массив уведомлений системных ошибок
+  errorNotifications: [
+    'Это заглушка 1'
+  ]
 };
