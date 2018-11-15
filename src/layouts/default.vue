@@ -75,7 +75,19 @@
         <div class="col-11">Running on Quasar v {{ $q.version }}</div>
         <!-- уведомление об ошибках -->
         <div class="col-auto">
-          <q-btn id="error-notification-btn" icon="cancel" dense size="sm" :style="styleObject">{{errorNotifications.length}}</q-btn>
+          <q-btn id="error-notification-btn" icon="cancel" dense size="sm" :style="styleObject">
+            {{errorNotifications.length}}
+            <q-tooltip :delay="1000">
+              Ошибок: {{errorNotifications.length}}
+            </q-tooltip>
+            <q-popover>
+              <q-list separator link dense v-if="errorNotifications.length != 0">
+                <q-item v-for="item in errorNotifications" :key="item">
+                  <q-item-main :label="item"/>
+                </q-item>
+              </q-list>
+            </q-popover>
+          </q-btn>
         </div>
       </div>
     </q-layout-footer>
@@ -107,7 +119,7 @@ export default {
     notifColor: {
       get() { return (this.errorNotifications.length ? 'red' : ''); }
     },
-    // объект для настройки стиля елемента
+    // объект для настройки стиля елемента уведомления
     styleObject() {
       return {
         color: this.notifColor,

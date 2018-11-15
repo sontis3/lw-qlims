@@ -75,7 +75,8 @@ module.exports = function (ctx) {
         'QTh',
         'QTd',
         'QToolbar',
-        'QToolbarTitle'
+        'QToolbarTitle',
+        'QTooltip'
       ],
       directives: [
         'Ripple',

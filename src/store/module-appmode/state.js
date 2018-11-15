@@ -30,6 +30,7 @@ export default {
   showAddDialog: false,
   // массив уведомлений системных ошибок
   errorNotifications: [
-    'Это заглушка 1'
+    'Это заглушка 1',
+    'Это заглушка 2'
   ]
 };
