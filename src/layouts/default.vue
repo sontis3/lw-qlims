@@ -82,8 +82,13 @@
             </q-tooltip>
             <q-popover>
               <q-list separator link dense v-if="errorNotifications.length != 0">
-                <q-item v-for="item in errorNotifications" :key="item">
-                  <q-item-main :label="item"/>
+                <!-- <q-item v-for="item in errorNotifications" :key="item.dateTime.toLocaleTimeString()"> -->
+                <q-item v-for="(item, index) in errorNotifications" :key="index">
+                  <q-item-side icon="error" color="red" />
+                  <q-item-main :label="item.dateTime.toLocaleString() + '::' + item.message"/>
+                  <q-item-side right>
+                    <q-btn flat dense icon="clear" @click="onDeleteNotification(index)"/>
+                  </q-item-side>
                 </q-item>
               </q-list>
             </q-popover>
@@ -146,6 +151,11 @@ export default {
       console.log(newAction);
       // debugger;
       this.changeAction(newAction);
+    },
+    // по нажатию кнопки удаления оповещения
+    onDeleteNotification(index) {
+      // this.errorNotifications.splice(index, 1);
+      this.$delete(this.errorNotifications, index);
     }
   },
   mounted() {

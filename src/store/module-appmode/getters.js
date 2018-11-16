@@ -9,9 +9,17 @@ export const currentAction = state => filter(state.currentMode.id, { field: 'mod
 // сформировать сообщение об ошибке от сервера
 /* eslint no-unused-vars: ["error", { "args": "none" }] */
 export const getErrorMessage = state => (httpMethod, err) => {
+  // запись уведомления об ошибке
+  const errNotification = {
+    dateTime: new Date(),
+    message: err.message
+  };
+  state.errorNotifications.push(errNotification);
+
   /* eslint prefer-destructuring: ["error", {VariableDeclarator: {object: false}}] */
   const responseURL = err.request.responseURL ? err.request.responseURL : err.config.url; // err.config;
   const { method } = err.config;
+
   if (err.response) {
     return `Status: ${err.response.status}.  ${err.response.data.message} = ${method} ${responseURL}`;
   }
