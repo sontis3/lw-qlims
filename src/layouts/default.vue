@@ -83,13 +83,28 @@
             <q-popover>
               <q-list separator link dense v-if="errorNotifications.length != 0">
                 <!-- <q-item v-for="item in errorNotifications" :key="item.dateTime.toLocaleTimeString()"> -->
-                <q-item v-for="(item, index) in errorNotifications" :key="index">
+                <q-collapsible v-for="(item, index) in errorNotifications"
+                  :key="index"
+                  separator
+                  dense>
+                  <template slot="header">
+                    <q-item-side icon="error" color="red" />
+                    <q-item-main :label="item.dateTime.toLocaleString() + '::' + item.message"/>
+                    <q-item-side right>
+                      <q-btn flat dense icon="clear" @click="onDeleteNotification(index)"/>
+                    </q-item-side>
+                  </template>
+                  <div>
+                    {{item.status}}
+                  </div>
+                </q-collapsible>
+                <!-- <q-item v-for="(item, index) in errorNotifications" :key="index">
                   <q-item-side icon="error" color="red" />
                   <q-item-main :label="item.dateTime.toLocaleString() + '::' + item.message"/>
                   <q-item-side right>
                     <q-btn flat dense icon="clear" @click="onDeleteNotification(index)"/>
                   </q-item-side>
-                </q-item>
+                </q-item> -->
               </q-list>
             </q-popover>
           </q-btn>
