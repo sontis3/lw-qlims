@@ -13,7 +13,7 @@
         <q-table
           :columns="columns"
           :visible-columns="visibleColumns"
-          row-key="name"
+          row-key="id"
           :data="ds[item]"
           dense
           separator="cell"
@@ -29,37 +29,54 @@
           </template>
 
           <!-- слот строк таблицы -->
-          <q-tr slot="body" slot-scope="props" :props="props">
-            <q-td v-for="col in props.cols" v-if="col.name !== 'rowActions'" :key="col.name" :props="props">
-              <template v-if="col.classes === 'as-checkbox'" :props="props">
-                <q-checkbox v-model="props.row[col.field]" @input="UpdateDocument(props.row, col.label)"/>
-              </template>
-              <template v-else-if="col.classes === 'popup-edit'">
-                {{ col.value }}
-                <q-popup-edit :value="props.row[col.field]" @input="val => UpdateDocument(col.field, val)">
-                <!-- <q-popup-edit v-model="props.row[col.field]" @save="UpdateDocument(props.row, col.label)"> -->
-                  <q-field count>
-                    <q-input v-model="props.row[col.field]" />
-                  </q-field>
-                </q-popup-edit>
-              </template>
-              <template v-else>
-                {{ col.value }}
-              </template>
-            </q-td>
-            <q-td key="rowActions" :props="props">
-              <q-btn round size="xs" icon="edit" @click="EditDocument(props.row)"/>
-              <q-btn round size="xs" icon="delete">
-                <q-popover anchor="bottom left" :style="popoverStyle" @show="showPopover">
-                  <span>Документ выбран для удаления</span>
-                  <div id="del-buttons">
-                    <q-btn outliner rounded dense size="form-label-inverted" color="red-14" text-color="white" label="Отменить" v-close-overlay />
-                    <q-btn outliner rounded dense color="red-4" text-color="white" label="Удалить" v-close-overlay @click="DeleteDocument(props.row)" />
-                  </div>
-                </q-popover>
-              </q-btn>
-            </q-td>
-          </q-tr>
+          <template slot="body" slot-scope="props">
+            <q-tr slot="body" :props="props">
+              <!-- ячейки таблицы -->
+              <q-td v-for="col in props.cols" v-if="col.name !== 'rowActions'" :key="col.name" :props="props" auto-width>
+                <template v-if="col.classes === 'as-checkbox'" :props="props">
+                  <q-checkbox v-model="props.row[col.field]" @input="UpdateDocument(props.row, col.label)"/>
+                </template>
+
+                <!-- кнопка открытия/закрытия строки таблицы -->
+                <template v-else-if="col.classes === 'expand-btn'">
+                  <q-checkbox color="primary" v-model="props.expand" checked-icon="remove" unchecked-icon="add" class="q-mr-md" />
+                </template>
+
+                <!-- редактирование поля -->
+                <template v-else-if="col.classes === 'popup-edit'">
+                  {{ col.value }}
+                  <q-popup-edit :value="props.row[col.field]" @input="val => UpdateDocument(col.field, val)">
+                  <!-- <q-popup-edit v-model="props.row[col.field]" @save="UpdateDocument(props.row, col.label)"> -->
+                    <q-field count>
+                      <q-input v-model="props.row[col.field]" />
+                    </q-field>
+                  </q-popup-edit>
+                </template>
+                <template v-else>
+                  {{ col.value }}
+                </template>
+              </q-td>
+              <!-- ячейка с кнопками акций -->
+              <q-td key="rowActions" :props="props">
+                <q-btn round size="xs" icon="edit" @click="EditDocument(props.row)"/>
+                <q-btn round size="xs" icon="delete">
+                  <q-popover anchor="bottom left" :style="popoverStyle" @show="showPopover">
+                    <span>Документ выбран для удаления</span>
+                    <div id="del-buttons">
+                      <q-btn outliner rounded dense size="form-label-inverted" color="red-14" text-color="white" label="Отменить" v-close-overlay />
+                      <q-btn outliner rounded dense color="red-4" text-color="white" label="Удалить" v-close-overlay @click="DeleteDocument(props.row)" />
+                    </div>
+                  </q-popover>
+                </q-btn>
+              </q-td>
+            </q-tr>
+            <!-- строка расширения -->
+            <q-tr v-show="props.expand" :props="props" auto-width>
+              <q-td colspan="100%">
+                <div class="text-left">This is expand slot for row above: {{ props.key }}.</div>
+              </q-td>
+            </q-tr>
+          </template>
         </q-table>
       </q-collapsible>
     </q-list>
@@ -108,6 +125,14 @@ export default {
   data: () => ({
     columns: [
       {
+        name: 'expandButton',
+        required: true,
+        label: '',
+        align: 'center',
+        field: '',
+        classes: 'expand-btn'
+      },
+      {
         name: 'studyNo',
         required: true,
         label: 'Код исследования',
@@ -147,7 +172,7 @@ export default {
         sortable: true
       }
     ],
-    visibleColumns: ['studyNo', 'testObject', 'customer', 'dateCreated', 'dateUpdated'],
+    visibleColumns: ['expandButton', 'studyNo', 'testObject', 'customer', 'dateCreated', 'dateUpdated'],
     addFormFields: {
       studyNo: null,
       planYear: 2018,
