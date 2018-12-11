@@ -5,7 +5,6 @@ module.exports = function (ctx) {
     // app plugins (/src/plugins)
     plugins: [
       'i18n',
-      'axios',
       'vuelidate'
     ],
     css: [
@@ -28,7 +27,7 @@ module.exports = function (ctx) {
       // extractCSS: false,
       devtool: '#source-map',
       sourceMap: true,
-      extendWebpack (cfg) {
+      extendWebpack(cfg) {
         cfg.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
@@ -69,6 +68,10 @@ module.exports = function (ctx) {
         'QPopupEdit',
         'QSearch',
         'QSelect',
+        'QTabs',
+        'QTab',
+        'QTabPane',
+        'QRouteTab',
         'QTable',
         'QTableColumns',
         'QTr',
@@ -140,7 +143,7 @@ module.exports = function (ctx) {
       // bundler: 'builder', // or 'packager'
       devtool: '#source-map',
       sourceMap: true,
-      extendWebpack (cfg) {
+      extendWebpack(cfg) {
         // do something with Electron process Webpack cfg
       },
       packager: {
