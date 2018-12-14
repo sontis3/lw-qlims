@@ -15,25 +15,26 @@ export const addStudy = async ({ getters, dispatch }, obj) => {
   return response;
 };
 
-// удалить документ
-export const deleteStudy = async ({ getters, dispatch }, id) => {
-  const url = `${getters.customersUrl}/${id}`;
+// пока не реализовано 14.12.18 OOA
+// // удалить документ
+// export const deleteStudy = async ({ getters, dispatch }, id) => {
+//   const url = `${getters.customersUrl}/${id}`;
 
-  const response = await axios.delete(url);
-  await dispatch('getCustomers');
-  return response;
-};
+//   const response = await axios.delete(url);
+//   await dispatch('getCustomers');
+//   return response;
+// };
 
-// изменить документ
-export const updateStudy = async ({ getters }, obj) => {
-  const url = `${getters.customersUrl}/${obj.id}`;
+// // изменить документ
+// export const updateStudy = async ({ getters }, obj) => {
+//   const url = `${getters.customersUrl}/${obj.id}`;
 
-  const putData = {
-    name: obj.name,
-    enabled: obj.enabled
-  };
+//   const putData = {
+//     name: obj.name,
+//     enabled: obj.enabled
+//   };
 
-  const header = { 'Content-type': 'application/json' };
-  const response = await axios.put(url, putData, { headers: header });
-  return response;
-};
+//   const header = { 'Content-type': 'application/json' };
+//   const response = await axios.put(url, putData, { headers: header });
+//   return response;
+// };

@@ -77,14 +77,21 @@
                 <q-tabs underline-color="red">
                   <!-- Tabs - notice slot="title" -->
                   <q-tab default slot="title" name="tab-1" icon="attachment" label="Документы" />
-                  <q-tab disable slot="title" name="tab-2" icon="fingerprint" />
+                  <q-tab disable slot="title" name="tab-2" icon="history" label="История" />
                   <q-tab alert slot="title" name="tab-3" icon="account_box" />
                   <q-tab slot="title" name="tab-4" icon="accessibility" />
                   <q-tab slot="title" name="tab-5" icon="build" />
 
                   <!-- Targets -->
-                  <q-tab-pane name="tab-1">Tab One</q-tab-pane>
-                  <q-tab-pane name="tab-2">Tab Two</q-tab-pane>
+                  <q-tab-pane name="tab-1">
+                    <div class="row gutter-xs" width="100%">
+                      <div class="col-7">
+                        Загруженные документы
+                      </div>
+                      <q-uploader url="" :upload-factory="uploadFiles" auto-expand multiple class="col-lg-5 col-md-4 col-sm-3"/>
+                    </div>
+                  </q-tab-pane>
+                  <q-tab-pane name="tab-2">История действий</q-tab-pane>
                   <q-tab-pane name="tab-3">Tab Three</q-tab-pane>
                   <q-tab-pane name="tab-4">Tab Four</q-tab-pane>
                   <q-tab-pane name="tab-5">Tab Five</q-tab-pane>
@@ -305,6 +312,13 @@ export default {
           });
         });
     },
+
+    // загрузка файлов
+    async uploadFiles(file, updateProgress) {
+      console.log(file);
+      console.log(updateProgress);
+    },
+
     showPopover() {
       // выставить ширину как у строки таблицы
       this.popoverStyle.minWidth = `${this.$el.querySelector('.q-table tbody tr').clientWidth}px`;
