@@ -245,6 +245,7 @@ export default {
       addDocument: 'ds/addStudy',
       deleteDocument: 'ds/deleteStudy',
       updateDocument: 'ds/updateStudy',
+      uploadFile: 'ds/uploadStudyFile',
 
       getShortEnabledCustomers: 'ds/getShortEnabledCustomers',
       getShortEnabledTestObjects: 'ds/getShortEnabledTestObjects'
@@ -315,6 +316,11 @@ export default {
 
     // загрузка файлов
     async uploadFiles(file, updateProgress) {
+      const formData = new FormData();
+      formData.append('upFile', file);
+      formData.append('studyId', 'asd');
+      const res = this.uploadFile(formData);
+      console.log(res);
       console.log(file);
       console.log(updateProgress);
     },

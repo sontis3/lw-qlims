@@ -38,3 +38,12 @@ export const addStudy = async ({ getters, dispatch }, obj) => {
 //   const response = await axios.put(url, putData, { headers: header });
 //   return response;
 // };
+
+// добавить файл
+export const uploadStudyFile = async ({ getters }, obj) => {
+  const url = getters.studiesUploadUrl;
+
+  const response = await axios.post(url, obj, { headers: { 'Content-Type': 'multipart/form-data' } });
+  // await dispatch('getStudies', obj.planYear);
+  return response;
+};
