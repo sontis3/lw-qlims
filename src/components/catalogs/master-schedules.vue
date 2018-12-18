@@ -88,7 +88,7 @@
                       <div class="col-7">
                         Загруженные документы
                       </div>
-                      <q-uploader url="" :upload-factory="uploadFiles" auto-expand multiple class="col-lg-5 col-md-4 col-sm-3"/>
+                      <q-uploader url="" :upload-factory="(file, updateProgress) => uploadFiles(file, updateProgress, props.row.studyNo)" auto-expand multiple class="col-lg-5 col-md-4 col-sm-3"/>
                     </div>
                   </q-tab-pane>
                   <q-tab-pane name="tab-2">История действий</q-tab-pane>
@@ -315,13 +315,13 @@ export default {
     },
 
     // загрузка файлов
-    async uploadFiles(file, updateProgress) {
+    async uploadFiles(file, updateProgress, studyNo) {
       const formData = new FormData();
       formData.append('upFile', file);
       formData.append('studyId', 'asd');
       const res = this.uploadFile(formData);
       console.log(res);
-      console.log(file);
+      console.log(studyNo);
       console.log(updateProgress);
     },
 
