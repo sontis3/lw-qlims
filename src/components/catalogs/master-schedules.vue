@@ -88,7 +88,7 @@
                       <div class="col-7">
                         Загруженные документы
                       </div>
-                      <q-uploader url="" :upload-factory="(file, updateProgress) => uploadFiles(file, updateProgress, props.row.studyNo)" auto-expand multiple class="col-lg-5 col-md-4 col-sm-3"/>
+                      <q-uploader url="" :upload-factory="(file, updateProgress) => uploadFiles(file, updateProgress, props.row)" auto-expand multiple class="col-lg-5 col-md-4 col-sm-3"/>
                     </div>
                   </q-tab-pane>
                   <q-tab-pane name="tab-2">История действий</q-tab-pane>
@@ -243,8 +243,8 @@ export default {
     ...mapActions({
       getDocuments: 'ds/getStudies',
       addDocument: 'ds/addStudy',
-      deleteDocument: 'ds/deleteStudy',
-      updateDocument: 'ds/updateStudy',
+      // deleteDocument: 'ds/deleteStudy',
+      // updateDocument: 'ds/updateStudy',
       uploadFile: 'ds/uploadStudyFile',
 
       getShortEnabledCustomers: 'ds/getShortEnabledCustomers',
@@ -315,54 +315,76 @@ export default {
     },
 
     // загрузка файлов
-    async uploadFiles(file, updateProgress, studyNo) {
+    async uploadFiles(file, updateProgress, row) {
       const formData = new FormData();
       formData.append('upFile', file);
-      formData.append('studyId', 'asd');
+      formData.append('studyId', row.id);
+      formData.append('fileName', file.name);
+      formData.append('fileType', file.type);
       const res = this.uploadFile(formData);
+
       console.log(res);
-      console.log(studyNo);
       console.log(updateProgress);
     },
 
     showPopover() {
       // выставить ширину как у строки таблицы
       this.popoverStyle.minWidth = `${this.$el.querySelector('.q-table tbody tr').clientWidth}px`;
+    },
+
+    // обработка promise без уведомления об успехе (для загрузки справочника по ссылке)
+    treatPromiseNoNotify(responsePromise) {
+      this.setLoading(true);
+      responsePromise.then(() => { })
+        .catch((err) => {
+          const errMessage = this.getErrorMessage('get', err);
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: errMessage,
+            icon: 'report_problem'
+          });
+        })
+        .finally(() => {
+          this.setLoading(false);
+        });
     }
   },
 
   mounted() {
     this.setLoading(true);
     let res = this.getShortEnabledCustomers();
-    res.then(() => { })
-      .catch((err) => {
-        const errMessage = this.getErrorMessage('get', err);
-        this.$q.notify({
-          color: 'negative',
-          position: 'top',
-          message: errMessage,
-          icon: 'report_problem'
-        });
-      })
-      .finally(() => {
-        this.setLoading(false);
-      });
+    this.treatPromiseNoNotify(res);
+    // res.then(() => { })
+    //   .catch((err) => {
+    //     const errMessage = this.getErrorMessage('get', err);
+    //     this.$q.notify({
+    //       color: 'negative',
+    //       position: 'top',
+    //       message: errMessage,
+    //       icon: 'report_problem'
+    //     });
+    //   })
+    //   .finally(() => {
+    //     this.setLoading(false);
+    //   });
 
     this.setLoading(true);
     res = this.getShortEnabledTestObjects();
-    res.then(() => { })
-      .catch((err) => {
-        const errMessage = this.getErrorMessage('get', err);
-        this.$q.notify({
-          color: 'negative',
-          position: 'top',
-          message: errMessage,
-          icon: 'report_problem'
-        });
-      })
-      .finally(() => {
-        this.setLoading(false);
-      });
+    this.treatPromiseNoNotify(res);
+    // res.then(() => { })
+    //   .catch((err) => {
+    //     const errMessage = this.getErrorMessage('get', err);
+    //     this.$q.notify({
+    //       color: 'negative',
+    //       position: 'top',
+    //       message: errMessage,
+    //       icon: 'report_problem'
+    //     });
+    //   })
+    //   .finally(() => {
+    //     this.setLoading(false);
+    //   });
   }
 };
 </script>

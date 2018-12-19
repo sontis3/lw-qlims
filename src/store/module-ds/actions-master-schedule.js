@@ -25,19 +25,19 @@ export const addStudy = async ({ getters, dispatch }, obj) => {
 //   return response;
 // };
 
-// // изменить документ
-// export const updateStudy = async ({ getters }, obj) => {
-//   const url = `${getters.customersUrl}/${obj.id}`;
+// изменить документ
+export const updateStudy = async ({ getters }, obj) => {
+  const url = `${getters.customersUrl}/${obj.id}`;
 
-//   const putData = {
-//     name: obj.name,
-//     enabled: obj.enabled
-//   };
+  const putData = {
+    name: obj.name,
+    enabled: obj.enabled
+  };
 
-//   const header = { 'Content-type': 'application/json' };
-//   const response = await axios.put(url, putData, { headers: header });
-//   return response;
-// };
+  const header = { 'Content-type': 'application/json' };
+  const response = await axios.put(url, putData, { headers: header });
+  return response;
+};
 
 // добавить файл
 export const uploadStudyFile = async ({ getters }, obj) => {
