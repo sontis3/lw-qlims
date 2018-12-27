@@ -321,9 +321,11 @@ export default {
       formData.append('studyId', row.id);
       formData.append('fileName', file.name);
       formData.append('fileType', file.type);
-      const res = this.uploadFile(formData);
 
-      console.log(res);
+      this.setLoading(true);
+      const res = this.uploadFile(formData);
+      this.treatResponsePost(res);
+
       console.log(updateProgress);
     },
 
@@ -332,12 +334,37 @@ export default {
       this.popoverStyle.minWidth = `${this.$el.querySelector('.q-table tbody tr').clientWidth}px`;
     },
 
-    // обработка promise без уведомления об успехе (для загрузки справочника по ссылке)
-    treatPromiseNoNotify(responsePromise) {
+    // обработка promise get (для загрузки справочника по ссылке)
+    treatResponseGet(responsePromise) {
       this.setLoading(true);
-      responsePromise.then(() => { })
+      responsePromise.then()
         .catch((err) => {
           const errMessage = this.getErrorMessage('get', err);
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: errMessage,
+            icon: 'report_problem'
+          });
+        })
+        .finally(() => {
+          this.setLoading(false);
+        });
+    },
+
+    // обработка promise post
+    treatResponsePost(responsePromise) {
+      this.setLoading(true);
+      responsePromise.then((response) => {
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: `Документ '${response.data.name}' успешно создан.`,
+          icon: 'save'
+        });
+      })
+        .catch((err) => {
+          const errMessage = this.getErrorMessage('post', err);
           this.$q.notify({
             color: 'negative',
             position: 'top',
@@ -354,37 +381,11 @@ export default {
   mounted() {
     this.setLoading(true);
     let res = this.getShortEnabledCustomers();
-    this.treatPromiseNoNotify(res);
-    // res.then(() => { })
-    //   .catch((err) => {
-    //     const errMessage = this.getErrorMessage('get', err);
-    //     this.$q.notify({
-    //       color: 'negative',
-    //       position: 'top',
-    //       message: errMessage,
-    //       icon: 'report_problem'
-    //     });
-    //   })
-    //   .finally(() => {
-    //     this.setLoading(false);
-    //   });
+    this.treatResponseGet(res);
 
     this.setLoading(true);
     res = this.getShortEnabledTestObjects();
-    this.treatPromiseNoNotify(res);
-    // res.then(() => { })
-    //   .catch((err) => {
-    //     const errMessage = this.getErrorMessage('get', err);
-    //     this.$q.notify({
-    //       color: 'negative',
-    //       position: 'top',
-    //       message: errMessage,
-    //       icon: 'report_problem'
-    //     });
-    //   })
-    //   .finally(() => {
-    //     this.setLoading(false);
-    //   });
+    this.treatResponseGet(res);
   }
 };
 </script>

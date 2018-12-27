@@ -156,14 +156,14 @@ export default {
     // openURL,
     // по нажатию на кнопку в тулбаре
     onChangeMode(newMode) {
-      console.log(newMode);
+      // console.log(newMode);
       // debugger;
       this.changeMode(newMode);
       this.$router.push({ name: this.currentAction });
     },
     // по нажатию на пункт акции в drawer
     onChangeAction(newAction) {
-      console.log(newAction);
+      // console.log(newAction);
       // debugger;
       this.changeAction(newAction);
     },
