@@ -40,10 +40,13 @@ export const updateStudy = async ({ getters }, obj) => {
 };
 
 // добавить файл
-export const uploadStudyFile = async ({ getters }, obj) => {
+export const uploadStudyFile = ({ getters }, obj) => {
   const url = getters.studiesUploadUrl;
 
-  const response = await axios.post(url, obj, { headers: { 'Content-Type': 'multipart/form-data' } });
+  const response = axios.post(url, obj.formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    onUploadProgress: (progressEvent) => { obj.updateProgress(progressEvent.loaded / progressEvent.total); }
+  });
   // await dispatch('getStudies', obj.planYear);
   return response;
 };

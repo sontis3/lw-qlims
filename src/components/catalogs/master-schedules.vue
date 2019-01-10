@@ -19,7 +19,7 @@
           separator="cell"
         >
           <!-- слот правого заголовка таблицы -->
-          <template slot="top-right" slot-scope="props">
+          <template slot="top-right">
             <!-- кнопка добавления документа -->
             <q-btn
               flat round dense
@@ -31,6 +31,7 @@
           <!-- слот строк таблицы -->
           <template slot="body" slot-scope="props">
             <q-tr slot="body" :props="props">
+
               <!-- ячейки таблицы -->
               <q-td v-for="col in props.cols" v-if="col.name !== 'rowActions'" :key="col.name" :props="props" auto-width>
                 <template v-if="col.classes === 'as-checkbox'" :props="props">
@@ -56,6 +57,7 @@
                   {{ col.value }}
                 </template>
               </q-td>
+
               <!-- ячейка с кнопками акций -->
               <q-td key="rowActions" :props="props">
                 <q-btn round size="xs" icon="edit" @click="EditDocument(props.row)"/>
@@ -88,7 +90,12 @@
                       <div class="col-7">
                         Загруженные документы
                       </div>
-                      <q-uploader url="" :upload-factory="(file, updateProgress) => uploadFiles(file, updateProgress, props.row)" auto-expand multiple class="col-lg-5 col-md-4 col-sm-3"/>
+                      <q-uploader url=""
+                        :upload-factory="(file, updateProgress) => uploadFiles(file, updateProgress, props.row)"
+                        @uploaded="onUploaded"
+                        auto-expand
+                        multiple
+                        class="col-lg-5 col-md-4 col-sm-3"/>
                     </div>
                   </q-tab-pane>
                   <q-tab-pane name="tab-2">История действий</q-tab-pane>
@@ -315,18 +322,35 @@ export default {
     },
 
     // загрузка файлов
-    async uploadFiles(file, updateProgress, row) {
-      const formData = new FormData();
-      formData.append('upFile', file);
-      formData.append('studyId', row.id);
-      formData.append('fileName', file.name);
-      formData.append('fileType', file.type);
+    uploadFiles(file, updProgress, row) {
+      const fData = new FormData();
+      fData.append('upFile', file);
+      fData.append('studyId', row.id);
+      fData.append('fileName', file.name);
+      fData.append('fileType', file.type);
 
-      this.setLoading(true);
-      const res = this.uploadFile(formData);
-      this.treatResponsePost(res);
+      // this.setLoading(true);
+      const res = this.uploadFile({ formData: fData, updateProgress: updProgress });
+      return res;
 
-      console.log(updateProgress);
+      /* eslint no-unused-vars: ["error", { "args": "none" }] */
+      // this.uploadFile({ formData: fData, updateProgress: updProgress })
+      //   .then((file1) => {
+      //     const prom = new Promise((resolve, reject) => { resolve(file1.config.data.get('upFile')); });
+      //     return prom;
+      //   });
+
+      // this.treatResponsePost(res, updProgress);
+    },
+
+    // событие после загрузки файла
+    onUploaded(file) {
+      this.$q.notify({
+        color: 'positive',
+        position: 'top',
+        message: `Документ '${file.data}' успешно загружен.`,
+        icon: 'save'
+      });
     },
 
     showPopover() {
@@ -353,13 +377,15 @@ export default {
     },
 
     // обработка promise post
-    treatResponsePost(responsePromise) {
+    treatResponsePost(responsePromise, updateProgress) {
       this.setLoading(true);
       responsePromise.then((response) => {
+        // установка progress bar 100%
+        updateProgress(1.0);
         this.$q.notify({
           color: 'positive',
           position: 'top',
-          message: `Документ '${response.data.name}' успешно создан.`,
+          message: `Документ '${response.data}' успешно создан.`,
           icon: 'save'
         });
       })
