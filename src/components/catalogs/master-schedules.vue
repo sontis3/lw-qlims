@@ -329,18 +329,21 @@ export default {
       fData.append('fileName', file.name);
       fData.append('fileType', file.type);
 
-      // this.setLoading(true);
-      const res = this.uploadFile({ formData: fData, updateProgress: updProgress });
-      return res;
-
       /* eslint no-unused-vars: ["error", { "args": "none" }] */
-      // this.uploadFile({ formData: fData, updateProgress: updProgress })
-      //   .then((file1) => {
-      //     const prom = new Promise((resolve, reject) => { resolve(file1.config.data.get('upFile')); });
-      //     return prom;
-      //   });
-
-      // this.treatResponsePost(res, updProgress);
+      return new Promise((resolve, reject) => {
+        this.uploadFile({ formData: fData, updateProgress: updProgress })
+          .then(response => resolve(file))
+          .catch((err) => {
+            const errMessage = this.getErrorMessage('post', err);
+            this.$q.notify({
+              color: 'negative',
+              position: 'top',
+              message: errMessage,
+              icon: 'report_problem'
+            });
+            return reject(err);
+          });
+      });
     },
 
     // событие после загрузки файла
@@ -348,7 +351,7 @@ export default {
       this.$q.notify({
         color: 'positive',
         position: 'top',
-        message: `Документ '${file.data}' успешно загружен.`,
+        message: `Документ '${file.name}' успешно загружен.`,
         icon: 'save'
       });
     },
@@ -374,34 +377,34 @@ export default {
         .finally(() => {
           this.setLoading(false);
         });
-    },
+    }
 
     // обработка promise post
-    treatResponsePost(responsePromise, updateProgress) {
-      this.setLoading(true);
-      responsePromise.then((response) => {
-        // установка progress bar 100%
-        updateProgress(1.0);
-        this.$q.notify({
-          color: 'positive',
-          position: 'top',
-          message: `Документ '${response.data}' успешно создан.`,
-          icon: 'save'
-        });
-      })
-        .catch((err) => {
-          const errMessage = this.getErrorMessage('post', err);
-          this.$q.notify({
-            color: 'negative',
-            position: 'top',
-            message: errMessage,
-            icon: 'report_problem'
-          });
-        })
-        .finally(() => {
-          this.setLoading(false);
-        });
-    }
+    // treatResponsePost(responsePromise, updateProgress) {
+    //   this.setLoading(true);
+    //   responsePromise.then((response) => {
+    //     // установка progress bar 100%
+    //     updateProgress(1.0);
+    //     this.$q.notify({
+    //       color: 'positive',
+    //       position: 'top',
+    //       message: `Документ '${response.data}' успешно создан.`,
+    //       icon: 'save'
+    //     });
+    //   })
+    //     .catch((err) => {
+    //       const errMessage = this.getErrorMessage('post', err);
+    //       this.$q.notify({
+    //         color: 'negative',
+    //         position: 'top',
+    //         message: errMessage,
+    //         icon: 'report_problem'
+    //       });
+    //     })
+    //     .finally(() => {
+    //       this.setLoading(false);
+    //     });
+    // }
   },
 
   mounted() {
