@@ -325,13 +325,12 @@ export default {
     uploadFiles(file, updProgress, row) {
       const fData = new FormData();
       fData.append('upFile', file);
-      fData.append('studyId', row.id);
       fData.append('fileName', file.name);
       fData.append('fileType', file.type);
 
       /* eslint no-unused-vars: ["error", { "args": "none" }] */
       return new Promise((resolve, reject) => {
-        this.uploadFile({ formData: fData, updateProgress: updProgress })
+        this.uploadFile({ studyId: row.id, formData: fData, updateProgress: updProgress })
           .then(response => resolve(file))
           .catch((err) => {
             const errMessage = this.getErrorMessage('post', err);
