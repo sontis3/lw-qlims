@@ -4,3 +4,4 @@ export const testObjectsUrl = state => `${state.apiUrl}/${state.dirPartUrl}/${st
 export const deliveryMethodsUrl = state => `${state.apiUrl}/${state.dirPartUrl}/${state.deliveryMethodsPartUrl}`;
 
 export const studiesUrl = state => `${state.apiUrl}/${state.catalogsPartUrl}/${state.studiesPartUrl}`;
+export const studyContentUrl = (state, getters) => studyId => `${getters.studiesUrl}/${studyId}/${state.contentStudyPartUrl}`;

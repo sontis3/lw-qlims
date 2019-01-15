@@ -39,9 +39,16 @@ export const updateStudy = async ({ getters }, obj) => {
   return response;
 };
 
+export const isStudyContentExists = async ({ getters }, studyId) => {
+  const url = getters.studyContentUrl(studyId);
+
+  const response = await axios.get(url);
+  return response;
+};
+
 // добавить файл
 export const uploadStudyFile = ({ getters }, obj) => {
-  const url = `${getters.studiesUrl}/${obj.studyId}/content`;
+  const url = getters.studyContentUrl(obj.studyId);
 
   const response = axios.post(url, obj.formData, {
     headers: { 'Content-Type': 'multipart/form-data' },

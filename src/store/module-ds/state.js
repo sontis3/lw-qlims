@@ -11,6 +11,7 @@ export default {
   testObjectsPartUrl: 'test-objects',
   deliveryMethodsPartUrl: 'delivery-methods',
   studiesPartUrl: 'studies',
+  contentStudyPartUrl: 'content',
 
   /* eslint no-multi-spaces: ["error", { ignoreEOLComments: true }] */
   // источники данных

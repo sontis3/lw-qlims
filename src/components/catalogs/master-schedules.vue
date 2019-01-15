@@ -252,6 +252,7 @@ export default {
       addDocument: 'ds/addStudy',
       // deleteDocument: 'ds/deleteStudy',
       // updateDocument: 'ds/updateStudy',
+      isStudyContentExists: 'ds/isStudyContentExists',
       uploadFile: 'ds/uploadStudyFile',
 
       getShortEnabledCustomers: 'ds/getShortEnabledCustomers',
@@ -323,6 +324,25 @@ export default {
 
     // загрузка файлов
     uploadFiles(file, updProgress, row) {
+      const res = this.isStudyContentExists(row.id);
+      res.then((response) => {
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: `Документ '${response.data.studyNo}' успешно создан.`,
+          icon: 'save'
+        });
+      })
+        .catch((err) => {
+          const errMessage = this.getErrorMessage('post', err);
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: errMessage,
+            icon: 'report_problem'
+          });
+        });
+
       const fData = new FormData();
       fData.append('upFile', file);
       fData.append('fileName', file.name);
@@ -378,32 +398,6 @@ export default {
         });
     }
 
-    // обработка promise post
-    // treatResponsePost(responsePromise, updateProgress) {
-    //   this.setLoading(true);
-    //   responsePromise.then((response) => {
-    //     // установка progress bar 100%
-    //     updateProgress(1.0);
-    //     this.$q.notify({
-    //       color: 'positive',
-    //       position: 'top',
-    //       message: `Документ '${response.data}' успешно создан.`,
-    //       icon: 'save'
-    //     });
-    //   })
-    //     .catch((err) => {
-    //       const errMessage = this.getErrorMessage('post', err);
-    //       this.$q.notify({
-    //         color: 'negative',
-    //         position: 'top',
-    //         message: errMessage,
-    //         icon: 'report_problem'
-    //       });
-    //     })
-    //     .finally(() => {
-    //       this.setLoading(false);
-    //     });
-    // }
   },
 
   mounted() {
