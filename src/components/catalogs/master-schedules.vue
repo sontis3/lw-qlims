@@ -138,6 +138,10 @@
         <q-btn flat label="Cancel" @click="props.cancel" />
       </template>
     </q-dialog>
+    <!-- диалог файл уже есть в базе -->
+    <q-dialog>
+
+    </q-dialog>
   </q-page>
 </template>
 
@@ -252,7 +256,7 @@ export default {
       addDocument: 'ds/addStudy',
       // deleteDocument: 'ds/deleteStudy',
       // updateDocument: 'ds/updateStudy',
-      isStudyContentExists: 'ds/isStudyContentExists',
+      getStudyContentInfo: 'ds/getStudyContentInfo',
       uploadFile: 'ds/uploadStudyFile',
 
       getShortEnabledCustomers: 'ds/getShortEnabledCustomers',
@@ -324,17 +328,33 @@ export default {
 
     // загрузка файлов
     uploadFiles(file, updProgress, row) {
-      const res = this.isStudyContentExists(row.id);
+      const res = this.getStudyContentInfo(row.id);
       res.then((response) => {
         this.$q.notify({
           color: 'positive',
           position: 'top',
-          message: `Документ '${response.data.studyNo}' успешно создан.`,
-          icon: 'save'
+          message: `Найдено '${response.data.length}' присоединенных файлов.`,
+          icon: 'warning'
         });
+        const isNewFile = (response.data.find((element, index, array) => element.filename === file.name)) === undefined;
+        if (isNewFile) {
+          this.$q.notify({
+            color: 'positive',
+            position: 'top',
+            message: `Не найден '${file.name}'.`,
+            icon: 'warning'
+          });
+        } else {
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: `Найден '${file.name}'.`,
+            icon: 'report_problem'
+          });
+        }
       })
         .catch((err) => {
-          const errMessage = this.getErrorMessage('post', err);
+          const errMessage = this.getErrorMessage('get', err);
           this.$q.notify({
             color: 'negative',
             position: 'top',

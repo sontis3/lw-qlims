@@ -39,7 +39,8 @@ export const updateStudy = async ({ getters }, obj) => {
   return response;
 };
 
-export const isStudyContentExists = async ({ getters }, studyId) => {
+// получить инфо по контенту исследования
+export const getStudyContentInfo = async ({ getters }, studyId) => {
   const url = getters.studyContentInfoUrl(studyId);
 
   const response = await axios.get(url);
